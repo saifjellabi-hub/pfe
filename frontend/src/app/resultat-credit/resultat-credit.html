@@ -1,1 +1,21 @@
-<p>resultat-credit works!</p>
+<div class="container mt-5 text-center">
+  <div class="card shadow border-0">
+    <div class="card-body p-5">
+      <h2 class="text-primary mb-4">Résultat de l'Analyse</h2>
+      
+      <div class="d-flex justify-content-center mb-4">
+        <div class="rounded-circle d-flex align-items-center justify-content-center bg-light border border-5 border-success" 
+             style="width: 150px; height: 150px;">
+          <h1 class="display-4 fw-bold text-success">{{score}}%</h1>
+        </div>
+      </div>
+
+      <div class="alert alert-success py-3">
+        <h3>Décision : {{decision}}</h3>
+        <p>Votre profil présente un risque faible. Un agent vous contactera sous 24h.</p>
+      </div>
+
+      <button class="btn btn-primary mt-3" routerLink="/client">Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
