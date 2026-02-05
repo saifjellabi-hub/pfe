@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left, .right {
+  width: 50%;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.left {
+  background-color: #f2f2f2;
+}
+
+.right {
+  background-color: #e6f0ff;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+a {
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+}
+.active {
+  font-weight: bold;
+  color: #0d6efd;
+}

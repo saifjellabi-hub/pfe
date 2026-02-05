@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h3>Nouvelle Demande de Crédit</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Montant du crédit (TND)</label>
+            <input type="number" class="form-control" formControlName="montant" placeholder="Ex: 50000">
+            <small class="text-danger" *ngIf="creditForm.get('montant')?.invalid && creditForm.get('montant')?.touched">
+              Le montant minimum est de 1000 TND.
+            </small>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Durée (en mois)</label>
+            <input type="number" class="form-control" formControlName="duree" placeholder="Ex: 120">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Revenu mensuel net (TND)</label>
+            <input type="number" class="form-control" formControlName="revenuMensuel">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Objet du crédit</label>
+            <select class="form-select" formControlName="objetCredit">
+              <option value="immobilier">Immobilier</option>
+              <option value="automobile">Automobile</option>
+              <option value="consommation">Consommation</option>
+              <option value="etudes">Études</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Profession</label>
+          <input type="text" class="form-control" formControlName="profession" placeholder="Ex: Ingénieur, Commerçant...">
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-secondary" routerLink="/client">Annuler</button>
+          <button type="submit" class="btn btn-success" [disabled]="creditForm.invalid">
+            Analyser mon dossier
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
