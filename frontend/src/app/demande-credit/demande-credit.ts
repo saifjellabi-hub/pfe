@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule ,FormGroup, FormControl, Validators} from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CreditService } from '../services/credit';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-demande-credit',
@@ -12,7 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class DemandeCredit {
 
-  creditForm = new FormGroup({
+    creditForm = new FormGroup({
     montant: new FormControl('', [Validators.required, Validators.min(1000)]),
     duree: new FormControl('', [Validators.required, Validators.min(6), Validators.max(360)]), // en mois
     revenuMensuel: new FormControl('', [Validators.required, Validators.min(0)]),
@@ -20,13 +22,23 @@ export class DemandeCredit {
     objetCredit: new FormControl('immobilier', [Validators.required])
   });
 
+
+  constructor(
+    private creditService: CreditService, 
+    private router: Router) {};
+
+
+
   onSubmit() {
-    if (this.creditForm.valid) {
-      console.log("Données envoyées :", this.creditForm.value);
-      //bch mbaed tekhdem beha el springboot
-      alert("Demande envoyée pour analyse !");
-    } else {
-      alert("Veuillez remplir correctement le formulaire.");
-    }
+  const formValues = this.creditForm.getRawValue();
+  if (this.creditForm.valid) {
+    const mnt = Number(formValues.montant);
+    const rev = Number(formValues.revenuMensuel);
+    
+    const scoreCalcule = this.creditService.calculerScore(mnt, rev);
+    console.log('Score calculé avant redirection :', scoreCalcule);
+    
+    this.router.navigate(['/resultat-credit']);
   }
+}
 }
