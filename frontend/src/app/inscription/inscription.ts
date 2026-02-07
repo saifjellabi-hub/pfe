@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inscription',
-  standalone: true, // تأكد إنها موجودة
-  imports: [ReactiveFormsModule, CommonModule], // زيد ReactiveFormsModule هوني
+  standalone: true, 
+  imports: [ReactiveFormsModule, CommonModule], 
   templateUrl: './inscription.html',
   styleUrl: './inscription.css'
 })

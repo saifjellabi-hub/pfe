@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef } from '@angular/core'; // زدنا Renderer2 و ElementRef هنا
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core'; 
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,9 +14,9 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
   showPassword = false;
-  isDarkMode = true; // الثيم الغامق هو الافتراضي كيف Spring Initializr
+  isDarkMode = true; 
 
-  // كونسراكتور واحد يجمع كل شيء
+  
   constructor(
     private fb: FormBuilder, 
     private router: Router, 

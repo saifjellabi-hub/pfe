@@ -34,7 +34,7 @@
   padding: 35px 40px;
   border-radius: 8px;
   width: 100%;
-  max-width: 650px; /* ⬅️ وسّعناها */
+  max-width: 650px; 
   color: var(--text-color);
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   position: relative;

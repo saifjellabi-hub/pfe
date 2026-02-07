@@ -8,7 +8,7 @@ import { ResultatCredit } from './resultat-credit/resultat-credit';
 export const routes: Routes = [
 
   { path: '', redirectTo: 'client', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'inscription', component: InscriptionComponent},
   { path: 'client', component: ClientComponent },
   { path: 'demande-credit', component: DemandeCredit },
