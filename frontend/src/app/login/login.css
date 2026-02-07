@@ -1,0 +1,175 @@
+:host {
+  --bg-color: #0f111a;        
+  --text-color: #ffffff;      
+  --vermeg-red: #ED1B2F;      
+  --border-color: #3e4451;
+  --primary-green: var(--vermeg-red); 
+}
+:host.light-theme {
+  --bg-color: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-color: #0f111a;
+  --input-bg: #ffffff;
+  --border-color: #dcdde1;
+  --vermeg-red: #ED1B2F;
+}
+
+.login-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+  position: relative; 
+  transition: 0.4s;
+}
+
+.login-card {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 8px; 
+  width: 100%;
+  max-width: 400px;
+  color: var(--text-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  position: relative;
+  text-align: center;
+}
+
+
+
+.header-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #ffffff; 
+  padding: 15px 25px;      
+  border-radius: 0 0 15px 15px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vermeg-logo {
+  width: 200px; 
+  height: auto;
+  display: block;
+}
+.theme-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  color: var(--vermeg-red);
+  font-size: 1.2rem;
+}
+
+.main-title { 
+  color: var(--text-color); 
+  margin-bottom: 15px; 
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.input-field { text-align: left; margin-top: 15px; }
+.input-field label { display: block; margin-bottom: 5px; font-size: 0.85rem; opacity: 0.9; }
+
+.input-field input {
+  width: 100%;
+  padding: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--vermeg-red);
+  box-shadow: 0 0 5px rgba(227, 30, 36, 0.3);
+}
+
+.password-wrapper { position: relative; display: flex; align-items: center; }
+
+.toggle-eye {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  color: #95a5a6;
+  font-size: 16px;
+}
+
+.toggle-eye:hover { color: var(--vermeg-red); }
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: var(--vermeg-red);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase; 
+  transition: 0.3s;
+}
+
+.btn-login:hover { background: #b31419; }
+
+.btn-register {
+  background: transparent;
+  border: 1px solid var(--vermeg-red);
+  color: var(--vermeg-red);
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+.forgot-link {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--vermeg-red);
+  cursor: pointer;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.forgot-link:hover { text-decoration: underline; }
+
+.captcha-mock {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.input-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+.captcha-mock label {
+  color: var(--text-color);
+  font-size: 0.8rem;
+}
+
+.captcha-mock input[type="checkbox"] {
+  accent-color: var(--vermeg-red);
+}
+
+
+.error-text { color: #ff4d4d; font-size: 11px; margin-top: 5px; }
+.input-field input.ng-invalid.ng-touched { border-color: #ff4d4d !important; }

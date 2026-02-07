@@ -1,0 +1,104 @@
+<div class="login-container">
+  <div class="header-logo">
+    <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
+  </div>
+
+  <div class="login-card inscription-card">
+   
+    <div class="theme-toggle" (click)="toggleTheme()">
+      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+    </div>
+
+    <h2 class="main-title">Inscription Client</h2><br>
+    <h3>
+    <p class="subtitle">Ouverture d'un nouveau compte bancaire</p>
+</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+      <div class="input-group">
+        <div class="input-field">
+          <label>Nom</label>
+          <input type="text" formControlName="nom">
+        </div>
+        <div class="input-field">
+          <label>Prénom</label>
+          <input type="text" formControlName="prenom">
+        </div>
+      </div>
+
+    
+       <div class="input-field full-width">
+      <div class="input-field">
+        <label>Numéro de CIN</label>
+        <input type="text" formControlName="cin" placeholder="CIN (8 chiffres)" maxlength="8">
+        <span class="error-text"
+          *ngIf="registerForm.get('cin')?.invalid && registerForm.get('cin')?.touched">
+          CIN = 8 chiffres obligatoires
+        </span>
+      </div></div>
+
+     
+       <div class="input-field full-width">
+      <div class="input-field">
+        <label>Email</label>
+        <input type="email" formControlName="email">
+      </div>
+</div>
+    
+      <div class="input-group">
+        <div class="input-field">
+          <label>Âge</label>
+          <input type="number" formControlName="age" placeholder="Min 18ans">
+        </div>
+        <div class="input-field">
+          <label>Téléphone</label>
+          <input type="text" formControlName="phone" placeholder="+216...">
+        </div>
+      </div>
+      <div class="input-field full-width">
+  <label>Montant du dépôt initial (TND)</label>
+  <input type="number" formControlName="soldeInitial" placeholder="Minimum 50 TND">
+  <span class="error-text" 
+    *ngIf="registerForm.get('soldeInitial')?.invalid && registerForm.get('soldeInitial')?.touched">
+    Le dépôt initial doit être d'au moins 50 TND
+  </span>
+</div>
+<div class="input-field full-width">
+  <label>Mot de passe</label>
+  <div class="password-wrapper">
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      formControlName="password" placeholder="........">
+    <span class="toggle-eye" (click)="togglePassword()">
+      <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+    </span>
+  </div>
+</div>
+
+<div class="input-field full-width">
+  <label>Confirmer mot de passe</label>
+  <div class="password-wrapper">
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      formControlName="confirmPassword" placeholder="........">
+    <span class="toggle-eye" (click)="togglePassword()">
+      <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+    </span>
+  </div>
+
+  <span class="error-text"
+    *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.touched">
+    Les mots de passe ne correspondent pas
+  </span>
+</div>
+
+      <button type="submit" class="btn-login" [disabled]="registerForm.invalid">
+        Créer le compte
+      </button>
+
+      <div class="divider"></div>
+      <p class="forgot-link" (click)="goToLogin()">Retour</p>
+
+    </form>
+  </div>
+</div>

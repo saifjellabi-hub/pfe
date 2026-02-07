@@ -1,0 +1,52 @@
+<div class="login-container">
+  <div class="header-logo">
+    <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
+  </div>
+
+  <div class="login-card">
+    <div class="theme-toggle" (click)="toggleTheme()">
+      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+    </div>
+
+    <h2 class="main-title">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="input-field">
+        <label>Numéro de CIN</label>
+        <input type="text" formControlName="cin" placeholder="8 chiffres" maxlength="8">
+        <span class="error-text" *ngIf="loginForm.get('cin')?.invalid && loginForm.get('cin')?.touched">
+          Le CIN doit contenir 8 chiffres.
+        </span>
+      </div>
+
+      <div class="input-field">
+        <label>Mot de passe</label>
+        <div class="password-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••">
+          <span class="toggle-eye" (click)="togglePassword()">
+             <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+          </span>
+        </div>
+        <span class="error-text" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Minimum 6 caractères.
+        </span>
+      </div>
+
+      <div class="extra-options">
+        <a (click)="goToForgotPassword()" class="forgot-link">Mot de passe oublié ?</a>
+      </div>
+
+      <div class="captcha-mock">
+        <input type="checkbox" id="robot" name="robot">
+        <label for="robot">Je ne suis pas un robot</label>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/RecaptchaLogo.svg" alt="captcha" width="25">
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">Connexion</button>
+
+      <div class="divider"></div>
+
+      <button type="button" class="btn-login" (click)="goToRegister()">Créer un nouveau compte</button>
+    </form>
+  </div> </div> 
+
