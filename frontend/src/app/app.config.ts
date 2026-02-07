@@ -3,13 +3,13 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { CreditService } from './services/credit';
 import { provideHttpClient } from '@angular/common/http';
-
-
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(),
-    CreditService
-  ]
+    provideClientHydration(withEventReplay()),
+    CreditService]
+  
 };

@@ -17,18 +17,29 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+                  "assets": [
+      "src/favicon.ico",
+      "src/assets"
+    ],
+       
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+           
             "styles": [
+               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
-            ]
+                        ],
+            "scripts": [
+             "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            }
+
           },
+          
           "configurations": {
             "production": {
               "budgets": [
