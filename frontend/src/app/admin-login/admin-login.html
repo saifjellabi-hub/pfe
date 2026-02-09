@@ -1,0 +1,53 @@
+<header class="top-nav">
+  <div class="admin-corner">
+    <nav>
+      <a routerLink="/login" class="admin-button">
+        <span class="dot"></span>
+        <span class="admin-text">Espace Client</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<div class="login-container">
+  <div class="header-logo">
+    <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
+  </div>
+
+  <div class="login-card">
+    <div class="theme-toggle" (click)="toggleTheme()">
+      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+    </div>
+
+    <h2 class="main-title">Admin Login</h2>
+
+    <form [formGroup]="adminForm" (ngSubmit)="onAdminLogin()">
+      <div class="input-field">
+        <label>Identifiant Administrateur</label>
+        <input type="text" formControlName="adminId" placeholder="ID Administrateur">
+      </div>
+
+      <div class="input-field">
+        <label>Mot de passe</label>
+        <div class="password-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••">
+          <span class="toggle-eye" (click)="togglePassword()">
+             <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="extra-options">
+        <a class="forgot-link">Accès restreint ?</a>
+      </div>
+
+      <div class="captcha-mock">
+        <input type="checkbox" id="robot" name="robot">
+        <label for="robot">Je ne suis pas un robot</label>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/RecaptchaLogo.svg" alt="captcha" width="25">
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="adminForm.invalid">Connexion Admin</button>
+    </form>
+  </div> 
+</div>
