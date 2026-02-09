@@ -1,39 +1,30 @@
-
-
-
 <header class="top-nav">
   <div class="admin-corner">
     <nav>
-      <a routerLink="/admin-login" class="admin-button">
+      <a routerLink="/login" class="admin-button">
         <span class="dot"></span>
-        <span class="admin-text">Espace Admin</span>
+        <span class="admin-text">Espace Client</span>
       </a>
     </nav>
   </div>
 </header>
-
 
 <div class="login-container">
   <div class="header-logo">
     <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
   </div>
 
-
-
   <div class="login-card">
     <div class="theme-toggle" (click)="toggleTheme()">
       <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
     </div>
 
-    <h2 class="main-title">Login</h2>
+    <h2 class="main-title">Admin Login</h2>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <form [formGroup]="adminForm" (ngSubmit)="onAdminLogin()">
       <div class="input-field">
-        <label>Numéro de CIN</label>
-        <input type="text" formControlName="cin" placeholder="8 chiffres" maxlength="8">
-        <span class="error-text" *ngIf="loginForm.get('cin')?.invalid && loginForm.get('cin')?.touched">
-          Le CIN doit contenir 8 chiffres.
-        </span>
+        <label>Identifiant Administrateur</label>
+        <input type="text" formControlName="adminId" placeholder="ID Administrateur">
       </div>
 
       <div class="input-field">
@@ -44,13 +35,10 @@
              <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
         </div>
-        <span class="error-text" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          Minimum 6 caractères.
-        </span>
       </div>
 
       <div class="extra-options">
-        <a (click)="goToForgotPassword()" class="forgot-link">Mot de passe oublié ?</a>
+        <a class="forgot-link">Accès restreint ?</a>
       </div>
 
       <div class="captcha-mock">
@@ -59,11 +47,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/RecaptchaLogo.svg" alt="captcha" width="25">
       </div>
 
-      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">Connexion</button>
-
-      <div class="divider"></div>
-
-      <button type="button" class="btn-login" (click)="goToRegister()">Créer un nouveau compte</button>
+      <button type="submit" class="btn-login" [disabled]="adminForm.invalid">Connexion Admin</button>
     </form>
-  </div> </div> 
-
+  </div> 
+</div>
