@@ -64,6 +64,20 @@
   </span>
 </div>
 <div class="input-field full-width">
+  <label>RIB (Relevé d'Identité Bancaire)</label>
+  <input 
+    type="text" 
+    formControlName="rib" 
+    placeholder="00000 00000 00000 00000 (20 chiffres)"
+    (input)="onRibInput($event)"
+    [class.error]="registerForm.get('rib')?.invalid && registerForm.get('rib')?.touched"
+  >
+  <small *ngIf="registerForm.get('rib')?.value?.replace(' ', '').length < 20 && registerForm.get('rib')?.touched" 
+         style="color: #ff4d4d;">
+    Le RIB doit contenir exactement 20 chiffres.
+  </small>
+</div>
+<div class="input-field full-width">
   <label>Mot de passe</label>
   <div class="password-wrapper">
     <input

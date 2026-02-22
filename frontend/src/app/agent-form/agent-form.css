@@ -1,0 +1,126 @@
+:host {
+  --bg-color: #0f111a;
+  --card-bg: #1e1f2a;
+  --text-color: #ffffff;
+  --vermeg-red: #ED1B2F;
+  --border-color: #3e4451;
+}
+
+:host.light-theme {
+  --bg-color: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-color: #0f111a;
+  --border-color: #dcdde1;
+}
+
+.agent-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 20px;
+  position: relative;
+}
+
+.header-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.vermeg-logo {
+  width: 200px;
+}
+
+.agent-card {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  color: var(--text-color);
+  position: relative;
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.input-field {
+  margin-bottom: 15px;
+}
+
+.input-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+.input-field input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--vermeg-red);
+}
+.password-wrapper { position: relative; display: flex; align-items: center; }
+.toggle-eye {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  color: #95a5a6;
+  font-size: 16px;
+}
+
+.toggle-eye:hover { color: var(--vermeg-red); }
+.error-text {
+  color: #ff4d4d;
+  font-size: 0.8rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--vermeg-red);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: #b31419;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--vermeg-red);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}

@@ -16,8 +16,8 @@
 
   <div class="login-card">
     <div class="theme-toggle" (click)="toggleTheme()">
-      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
-    </div>
+  <i [class]="themeService.isDarkMode() ? 'fas fa-sun' : 'fas fa-moon'"></i>
+</div>
 
     <h2 class="main-title">Admin Login</h2>
 

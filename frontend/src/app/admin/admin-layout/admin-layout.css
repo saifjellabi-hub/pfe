@@ -1,0 +1,221 @@
+:host {
+  --bg-color: #0f111a;        
+  --text-color: #ffffff;      
+  --vermeg-red: #ED1B2F;      
+  --card-bg: #1e1f2a;
+  --border-color: #3e4451;
+}
+
+:host.light-theme {
+  --bg-color: #f4f7f6;
+  --text-color: #0f111a;
+  --card-bg: #ffffff;
+  --border-color: #dcdde1;
+  --vermeg-red: #ED1B2F;
+}
+/* Theme toggle button */
+.theme-toggle {
+  background: transparent;
+  border: none;
+  color: var(--vermeg-red);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  color: #b31419;
+}
+
+/* Admin container */
+.admin-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Header */
+.admin-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 120px;
+  padding: 0 30px;
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  position: relative;
+}
+
+/* Left side */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+}
+
+.nav-divider {
+  opacity: 0.5;
+}
+
+
+.nav-title {
+  position: absolute;
+  left: 50%;
+
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text-color);
+}
+
+
+/* Right side buttons */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-logo-wrapper {
+  background-color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 0 0 15px 15px; /* نفس login page */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.nav-logo {
+  height: 60px;
+  width: auto;
+}
+.admin-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-button:hover {
+  background-color: rgba(237, 27, 47, 0.1);
+  border-color: var(--vermeg-red);
+  color: var(--vermeg-red);
+  transform: translateY(-2px);
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: var(--vermeg-red);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.logout-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.2s ease;
+}
+
+.logout-icon-btn:hover {
+  color: var(--vermeg-red);
+}
+
+/* Main content */
+.admin-main {
+  flex: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
+}
+
+/* Sections */
+.section-wrapper {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-color);
+}
+
+/* White card (table container) */
+.white-card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  overflow-x: auto;
+}
+
+/* Table */
+.vermeg-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vermeg-table th, .vermeg-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.vermeg-table th {
+   font-weight: bold;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.vermeg-table td {
+  font-size: 0.85rem;
+}
+
+/* Table action button */
+.table-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.table-action-btn:hover {
+  color: var(--vermeg-red);
+}
+
+/* Risk badge */
+.risk-badge {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background-color: var(--vermeg-red);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+

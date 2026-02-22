@@ -111,18 +111,22 @@ input {
 
 .header-logo {
   position: absolute;
-  top: 0; /* Changed to 0 to mimic the image pull-down style */
+  top: 20px;
   left: 20px;
   background-color: #ffffff; 
   padding: 15px 25px;      
   border-radius: 0 0 15px 15px; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .vermeg-logo {
-  width: 180px; 
+  width: 200px; 
   height: auto;
+  display: block;
 }
 .main-title { margin-bottom: 20px; font-weight: 700; }
 .input-field { text-align: left; margin-top: 15px; }

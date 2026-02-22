@@ -67,15 +67,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 :host {
   --bg-color: #0f111a;        
   --text-color: #ffffff;      
@@ -251,3 +242,42 @@
 
 .error-text { color: #ff4d4d; font-size: 11px; margin-top: 5px; }
 .input-field input.ng-invalid.ng-touched { border-color: #ff4d4d !important; }
+
+.first-login-container {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05); 
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50; 
+}
+
+
+.fade-in {
+    animation: slideDown 0.5s ease forwards;
+    opacity: 0;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.new-pass-input {
+    border: 2px solid #4CAF50 !important; 
+    transition: all 0.3s ease;
+}
+
+.new-pass-input:focus {
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}

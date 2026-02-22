@@ -1,0 +1,87 @@
+<div class="admin-container">
+<header class="admin-nav">
+  <div class="nav-logo-wrapper">
+    <img src="assets/vermeg.png" alt="Vermeg" class="nav-logo">
+  </div>
+
+  <div class="nav-title">
+     ADMIN DASHBOARD
+  </div>
+
+  <div class="nav-right">
+    <button class="theme-toggle" (click)="toggleTheme()">
+      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+    </button>
+
+    <button class="admin-button" (click)="goToAddAgent()">
+      <span class="dot"></span>
+      <span class="admin-text">Ajouter Agent</span>
+    </button>
+
+    <button class="logout-icon-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
+  </div>
+</header>
+
+
+  <main class="admin-main">
+    <div class="section-wrapper">
+      <h2 class="section-header"><i class="fas fa-user-tie"></i> Liste des Agents</h2>
+      <div class="white-card">
+        <table class="vermeg-table">
+          <thead>
+            <tr>
+              <th>Nom & Prénom</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Matricule</th>
+              <th class="text-right">Action</th>
+            </tr>
+          </thead>
+         <tbody>
+  <tr *ngFor="let agent of agents">
+    <td>{{ agent?.nom }} {{ agent?.prenom }}</td>
+    <td>{{ agent?.email }}</td>
+    <td>{{ agent?.phone }}</td>
+    <td>{{ agent?.matricule }}</td>
+    <td class="text-right">
+      <button class="table-action-btn"><i class="fas fa-edit"></i></button>
+    </td>
+  </tr>
+</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-wrapper mt-5">
+      <h2 class="section-header"><i class="fas fa-users"></i> Liste des Clients</h2>
+      <div class="white-card">
+        <table class="vermeg-table">
+          <thead>
+            <tr>
+              <th>CIN</th>
+              <th>Nom & Prénom</th>
+              <th>Email</th>
+              <th>Score de Risque</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let client of clients">
+          <td>{{ client.ncin }}</td> 
+          <td>{{ client.nom }} {{ client.prenom }}</td>
+          <td>{{ client.email }}</td>
+  <td>
+    <span class="badge" [ngClass]="client.score > 70 ? 'high-risk' : 'low-risk'">
+      {{ client.score }}%
+    </span>
+  </td>
+  <td>{{ client.status || 'En attente' }}</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,11 +1,15 @@
-<div class="container">
+<div class="container" *ngIf="currentUser">
   <!-- Bloc infos client -->
   <div class="left">
     <h2>Informations Client</h2>
-    <p><strong>Nom :</strong> Ali</p>
-    <p><strong>Prénom :</strong> Saif</p>
-    <p><strong>Solde :</strong> 4500 DT</p>
-    <p><strong>Adresse :</strong> Tunis</p>
+    <p><strong>Numéro de CIN :</strong> {{ currentUser.ncin }}</p>
+    <p><strong>Nom :</strong> {{ currentUser.nom }}</p>
+    <p><strong>Prénom :</strong> {{ currentUser.prenom }}</p>
+    <p><strong>RIB :</strong> {{ currentUser.rib }}</p>
+    <p><strong>Âge :</strong> {{ currentUser.age }}</p>
+    <p><strong>Téléphone :</strong> {{ currentUser.tel }}</p>
+    <p><strong>Solde :</strong> {{ currentUser.soldeInitial }} DT</p>
+    <p><strong>Email :</strong> {{ currentUser.email }}</p>
   </div>
 
   <!-- Bloc navigation -->

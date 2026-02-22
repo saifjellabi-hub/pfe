@@ -1,0 +1,84 @@
+<div class="agent-container">
+  <div class="header-logo">
+    <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
+  </div>
+
+  <div class="agent-card">
+    <!-- Toggle theme -->
+    <button class="theme-toggle" (click)="toggleTheme()">
+      <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+    </button>
+
+    <h2 class="main-title">Ajouter un Agent</h2>
+
+    <form [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+      <div class="input-field">
+        <label>Nom</label>
+        <input type="text" formControlName="nom" placeholder="Nom">
+        <span class="error-text" *ngIf="agentForm.get('nom')?.invalid && agentForm.get('nom')?.touched">
+          Nom requis
+        </span>
+      </div>
+
+      <div class="input-field">
+        <label>Prénom</label>
+        <input type="text" formControlName="prenom" placeholder="Prénom">
+        <span class="error-text" *ngIf="agentForm.get('prenom')?.invalid && agentForm.get('prenom')?.touched">
+          Prénom requis
+        </span>
+      </div>
+           <div class="input-field">
+        <label>Numéro CIN</label>
+        <input type="text" formControlName="cin" placeholder="8 chiffres" maxlength="8">
+        <span class="error-text" *ngIf="agentForm.get('cin')?.invalid && agentForm.get('cin')?.touched">
+          CIN doit contenir 8 chiffres
+        </span>
+      </div>
+ <div class="input-field">
+  <label>Téléphone</label>
+  <input type="text" formControlName="phone" placeholder="8 chiffres" maxlength="8">
+  <span class="error-text" *ngIf="agentForm.get('phone')?.invalid && agentForm.get('phone')?.touched">
+    Numéro de téléphone valide requis (8 chiffres)
+  </span>
+</div>
+      <div class="input-field">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="email@domain.com">
+        <span class="error-text" *ngIf="agentForm.get('email')?.invalid && agentForm.get('email')?.touched">
+          Email invalide
+        </span>
+      </div>
+
+ 
+
+      <div class="input-field">
+        <label>Mot de passe</label>
+        <div class="password-wrapper">
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••">
+         <span class="toggle-eye" (click)="togglePassword()">
+             <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+          </span></div>
+        <span class="error-text" *ngIf="agentForm.get('password')?.invalid && agentForm.get('password')?.touched">
+          Minimum 6 caractères
+        </span>
+      </div>
+<div class="input-field">
+  <label>Confirmer le mot de passe</label>
+  <div class="password-wrapper">
+    <input [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="••••••">
+      <span class="toggle-eye" (click)="togglePassword()">
+             <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+          </span></div>
+  <span class="error-text" *ngIf="agentForm.hasError('passwordMismatch') && agentForm.get('confirmPassword')?.touched">
+    Les mots de passe ne correspondent pas
+  </span>
+</div>
+      <div class="input-field">
+        <label>Matricule</label>
+        <input type="text" formControlName="matricule" placeholder="Matricule">
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="agentForm.invalid">Enregistrer</button>
+    </form>
+  </div>
+</div>
