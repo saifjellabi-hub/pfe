@@ -27,4 +27,12 @@ export class ClientService {
   getClients(): Observable<any[]> {
   return this.http.get<any[]>(`${this.apiUrl}/all`); 
 }
+
+deleteClient(ncin: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/delete/${ncin}`);
+}
+
+updateClient(ncin: number, client: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/update/${ncin}`, client);
+}
 }

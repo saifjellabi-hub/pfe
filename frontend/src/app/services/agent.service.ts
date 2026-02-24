@@ -20,4 +20,12 @@ export class AgentService {
   getAgents(): Observable<any[]> {
   return this.http.get<any[]>(`${this.apiUrl}/all`); 
 }
+
+deleteAgent(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/delete/${id}`);
+}
+
+updateAgent(id: number, agent: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/update/${id}`, agent);
+}
 }

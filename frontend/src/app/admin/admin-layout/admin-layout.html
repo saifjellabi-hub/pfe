@@ -28,25 +28,59 @@
   <main class="admin-main">
     <div class="section-wrapper">
       <h2 class="section-header"><i class="fas fa-user-tie"></i> Liste des Agents</h2>
+      <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" [(ngModel)]="searchTermAgent" placeholder="Rechercher par Matricule...">
+    </div>
       <div class="white-card">
         <table class="vermeg-table">
           <thead>
             <tr>
+              <th>CIN</th>
               <th>Nom & Prénom</th>
               <th>Email</th>
               <th>Téléphone</th>
               <th>Matricule</th>
+              <th>Mot de passe</th>
               <th class="text-right">Action</th>
             </tr>
           </thead>
          <tbody>
-  <tr *ngFor="let agent of agents">
-    <td>{{ agent?.nom }} {{ agent?.prenom }}</td>
-    <td>{{ agent?.email }}</td>
-    <td>{{ agent?.phone }}</td>
-    <td>{{ agent?.matricule }}</td>
+  <tr *ngFor="let agent of filteredAgents">
+    <td>
+    <span *ngIf="editingAgentId !== agent.id">{{ agent.cin }}</span>
+    <input *ngIf="editingAgentId === agent.id" [(ngModel)]="editAgentData.cin" type="number" class="edit-input-small">
+  </td>
+    <td>
+    <span *ngIf="editingAgentId !== agent.id">{{ agent.nom }} {{ agent.prenom }}</span>
+    <div *ngIf="editingAgentId === agent.id" class="edit-inputs">
+      <input [(ngModel)]="editAgentData.nom" class="small-input">
+      <input [(ngModel)]="editAgentData.prenom" class="small-input">
+    </div>
+  </td>
+    <td>
+        <span *ngIf="editingAgentId !== agent.id">{{ agent.email }}</span>
+        <input *ngIf="editingAgentId === agent.id" [(ngModel)]="editAgentData.email">
+      </td>
+    <td>
+        <span *ngIf="editingAgentId !== agent.id">{{ agent.phone }}</span>
+        <input *ngIf="editingAgentId === agent.id" [(ngModel)]="editAgentData.phone">
+      </td>
+   <td>
+        <span *ngIf="editingAgentId !== agent.id">{{ agent.matricule }}</span>
+        <input *ngIf="editingAgentId === agent.id" [(ngModel)]="editAgentData.matricule">
+      </td>
+    <td><span *ngIf="editingAgentId !== agent.id">{{ agent?.password }}</span>
+    <input *ngIf="editingAgentId === agent.id" [(ngModel)]="editAgentData.password" type="password" placeholder="Nouveau password"></td>
     <td class="text-right">
-      <button class="table-action-btn"><i class="fas fa-edit"></i></button>
+       <ng-container *ngIf="editingAgentId !== agent.id">
+      <button class="table-action-btn edit" (click)="startEditAgent(agent)"><i class="fas fa-edit"></i></button>
+      <button class="table-action-btn delete" (click)="deleteAgent(agent.id)"><i class="fas fa-trash"></i></button>
+    </ng-container>
+    <ng-container *ngIf="editingAgentId === agent.id">
+      <button class="table-action-btn save" (click)="saveAgentEdit()"><i class="fas fa-check"></i></button>
+      <button class="table-action-btn cancel" (click)="cancelAgentEdit()"><i class="fas fa-times"></i></button>
+    </ng-container>
     </td>
   </tr>
 </tbody>
@@ -56,28 +90,73 @@
 
     <div class="section-wrapper mt-5">
       <h2 class="section-header"><i class="fas fa-users"></i> Liste des Clients</h2>
+      <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" [(ngModel)]="searchTermClient" placeholder="Rechercher par CIN...">
+    </div>
       <div class="white-card">
         <table class="vermeg-table">
           <thead>
             <tr>
               <th>CIN</th>
               <th>Nom & Prénom</th>
+              <th>Age</th>
               <th>Email</th>
+              <th>Téléphone</th>
+              <th>Solde</th> 
+              <th>RIB</th>
               <th>Score de Risque</th>
               <th>Statut</th>
+               <th class="text-right">Action</th>
             </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let client of clients">
+          <tr *ngFor="let client of filteredClients">
           <td>{{ client.ncin }}</td> 
-          <td>{{ client.nom }} {{ client.prenom }}</td>
-          <td>{{ client.email }}</td>
+         <td>
+        <span *ngIf="editingClientNcin !== client.ncin">{{ client.nom }} {{ client.prenom }}</span>
+        <div *ngIf="editingClientNcin === client.ncin" class="edit-inputs">
+          <input [(ngModel)]="editFormData.nom" class="small-input">
+          <input [(ngModel)]="editFormData.prenom" class="small-input">
+        </div>
+      </td>
+          <td>
+        <span *ngIf="editingClientNcin !== client.ncin">{{ client.age }}</span>
+        <input *ngIf="editingClientNcin === client.ncin" type="number" [(ngModel)]="editFormData.age" style="width: 50px;">
+      </td>
+          <td>
+        <span *ngIf="editingClientNcin !== client.ncin">{{ client.email }}</span>
+        <input *ngIf="editingClientNcin === client.ncin" [(ngModel)]="editFormData.email">
+      </td>
+          <td>
+        <span *ngIf="editingClientNcin !== client.ncin">{{ client.tel }}</span>
+        <input *ngIf="editingClientNcin === client.ncin" [(ngModel)]="editFormData.tel">
+      </td>
+           <td>
+        <span *ngIf="editingClientNcin !== client.ncin">{{ client.soldeInitial }}</span>
+        <input *ngIf="editingClientNcin === client.ncin" type="number" [(ngModel)]="editFormData.soldeInitial">
+      </td>
+          <td>
+        <span *ngIf="editingClientNcin !== client.ncin">{{ client.rib }}</span>
+        <input *ngIf="editingClientNcin === client.ncin" [(ngModel)]="editFormData.rib">
+      </td>
   <td>
     <span class="badge" [ngClass]="client.score > 70 ? 'high-risk' : 'low-risk'">
       {{ client.score }}%
     </span>
   </td>
   <td>{{ client.status || 'En attente' }}</td>
+  <td class="text-right">
+    <ng-container *ngIf="editingClientNcin !== client.ncin">
+          <button class="table-action-btn edit" (click)="startEditClient(client)"><i class="fas fa-edit"></i></button>
+          <button class="table-action-btn delete" (click)="deleteClient(client.ncin)"><i class="fas fa-trash"></i></button>
+        </ng-container>
+
+        <ng-container *ngIf="editingClientNcin === client.ncin">
+          <button class="table-action-btn save" (click)="saveEdit()"><i class="fas fa-check"></i></button>
+          <button class="table-action-btn cancel" (click)="cancelEdit()"><i class="fas fa-times"></i></button>
+        </ng-container>
+  </td>
 </tr>
           </tbody>
         </table>

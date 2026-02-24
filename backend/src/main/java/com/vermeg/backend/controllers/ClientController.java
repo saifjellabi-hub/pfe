@@ -6,8 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,5 +89,27 @@ public ResponseEntity<?> loginAdmin(@RequestBody Client loginDetails) {
             }
         })
         .orElse(ResponseEntity.status(404).body("Administrateur non trouvé"));
+}
+@DeleteMapping("/delete/{ncin}")
+public ResponseEntity<?> deleteClient(@PathVariable int ncin) {
+    return clientRepository.findById(ncin).map(client -> {
+        clientRepository.delete(client);
+        return ResponseEntity.ok().body("{\"message\": \"Client supprimé\"}");
+    }).orElse(ResponseEntity.notFound().build());
+}
+
+@PutMapping("/update/{ncin}")
+public ResponseEntity<?> updateClient(@PathVariable int ncin, @RequestBody Client clientDetails) {
+    return clientRepository.findById(ncin).map(client -> {
+        client.setNom(clientDetails.getNom());
+        client.setPrenom(clientDetails.getPrenom());
+        client.setAge(clientDetails.getAge());
+        client.setEmail(clientDetails.getEmail());
+        client.setTel(clientDetails.getTel());
+        client.setSoldeInitial(clientDetails.getSoldeInitial());
+        client.setRib(clientDetails.getRib());
+
+        return ResponseEntity.ok(clientRepository.save(client));
+    }).orElse(ResponseEntity.notFound().build());
 }
 }

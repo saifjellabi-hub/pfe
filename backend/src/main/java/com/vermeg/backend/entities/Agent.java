@@ -29,5 +29,5 @@ public class Agent {
     @Column(unique = true)
     private String matricule;
     
-    private String role = "AGENT"; // قيمة افتراضية
+    private String role = "AGENT"; 
 }
