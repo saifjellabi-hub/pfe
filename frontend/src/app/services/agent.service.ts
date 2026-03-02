@@ -28,4 +28,8 @@ deleteAgent(id: number): Observable<any> {
 updateAgent(id: number, agent: any): Observable<any> {
   return this.http.put(`${this.apiUrl}/update/${id}`, agent);
 }
+
+login(credentials: any): Observable<any> {
+  return this.http.post('http://localhost:8080/api/agents/login', credentials);
+}
 }

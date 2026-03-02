@@ -66,7 +66,9 @@ loadData() {
   goToAddAgent() {
     this.router.navigate(['/ajouter-agent']); 
   }
-
+  goToRegister() {
+    this.router.navigate(['/inscription']);
+  }
   // logout
   logout() {
     this.router.navigate(['/admin-login']);
@@ -131,12 +133,12 @@ saveAgentEdit() {
   if (this.editingAgentId) {
     this.agentService.updateAgent(this.editingAgentId, this.editAgentData).subscribe({
       next: (res) => {
-        // هذا السطر هو اللي يحي الـ Inputs ويرجع الجدول عادي بمجرد نجاح العملية
+        
         this.editingAgentId = null; 
         
         alert('Agent mis à jour avec succès !');
         
-        this.loadData(); // إعادة شحن البيانات الجديدة من السيرفر
+        this.loadData(); 
       },
       error: (err) => {
         console.error("Erreur update agent:", err);
@@ -145,14 +147,14 @@ saveAgentEdit() {
     });
   }
 }
-// ميثود الفلترة للـ Clients (حسب الـ CIN)
+
 get filteredClients() {
   return this.clients.filter(client => 
     client.ncin.toString().includes(this.searchTermClient)
   );
 }
 
-// ميثود الفلترة للـ Agents (حسب الـ Matricule)
+
 get filteredAgents() {
   return this.agents.filter(agent => 
     agent.matricule.toLowerCase().includes(this.searchTermAgent.toLowerCase())

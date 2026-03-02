@@ -35,4 +35,17 @@ deleteClient(ncin: number): Observable<any> {
 updateClient(ncin: number, client: any): Observable<any> {
   return this.http.put(`${this.apiUrl}/update/${ncin}`, client);
 }
+forgotPassword(email: string) {
+  return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+}
+
+verifyResetCode(email: string, code: string) {
+  return this.http.post(`${this.apiUrl}/verify-code`, { email, code });
+}
+verifyOtp(email: string, otp: string) {
+  return this.http.post(`${this.apiUrl}/verify-otp`, { email, otp }, { responseType: 'text' });
+}
+updatePassword(email: string, password: string) {
+  return this.http.post(`${this.apiUrl}/reset-password`, { email, password }, { responseType: 'text' });
+}
 }

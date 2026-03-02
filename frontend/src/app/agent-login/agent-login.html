@@ -1,14 +1,3 @@
-<header class="top-nav">
-  <div class="admin-corner">
-    <nav>
-      <a routerLink="/login" class="admin-button">
-        <span class="dot"></span>
-        <span class="admin-text">Espace Client</span>
-      </a>
-    </nav>
-  </div>
-</header>
-
 <div class="login-container">
   <div class="header-logo">
     <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
@@ -16,15 +5,15 @@
 
   <div class="login-card">
     <div class="theme-toggle" (click)="toggleTheme()">
-  <i [class]="themeService.isDarkMode() ? 'fas fa-sun' : 'fas fa-moon'"></i>
-</div>
+      <i [class]="themeService.isDarkMode() ? 'fas fa-sun' : 'fas fa-moon'"></i>
+    </div>
 
-    <h2 class="main-title">Admin Login</h2>
+    <h2 class="main-title">Agent Login</h2>
 
-    <form [formGroup]="adminForm" (ngSubmit)="onAdminLogin()">
+    <form [formGroup]="agentForm" (ngSubmit)="onAgentLogin()">
       <div class="input-field">
-        <label>Identifiant Administrateur</label>
-        <input type="text" formControlName="adminId" placeholder="ID Administrateur">
+        <label>Matricule Agent</label>
+        <input type="text" formControlName="matricule"placeholder="matricule">
       </div>
 
       <div class="input-field">
@@ -36,16 +25,13 @@
           </span>
         </div>
       </div>
-
-      
-
-      <div class="captcha-mock">
+<div class="captcha-mock">
         <input type="checkbox" id="robot" name="robot">
         <label for="robot">Je ne suis pas un robot</label>
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/RecaptchaLogo.svg" alt="captcha" width="25">
       </div>
- <div class="actions-row" style="display: flex; gap: 10px; margin-top: 20px;">
-      <button type="submit" class="btn-login"style="flex: 1;" [disabled]="adminForm.invalid">Connexion</button>
+      <div class="actions-row" style="display: flex; gap: 10px; margin-top: 20px;">
+      <button type="submit" class="btn-login" style="flex: 1;" [disabled]="agentForm.invalid">Connexion</button>
     <button type="reset" class="btn-cancel" style="flex: 1;">Annuler</button>
 </div>
     </form>
@@ -53,7 +39,5 @@
 </div>
 
 
-
-
-
-  
+     
+    

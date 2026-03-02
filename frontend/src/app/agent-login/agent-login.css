@@ -178,6 +178,7 @@ input {
   cursor: pointer;
   accent-color: var(--vermeg-red); 
 }
+
 .forgot-link {
   display: block;
   text-align: right;

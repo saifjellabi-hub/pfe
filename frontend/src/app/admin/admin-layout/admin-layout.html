@@ -13,6 +13,13 @@
       <i [class]="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
     </button>
 
+
+     <button style="display: flex; gap: 10px;" (click)="goToRegister()" class="admin-button">
+      <span class="dot"></span>
+      <span class="admin-text">Ajouter Client</span>
+    </button>
+
+
     <button class="admin-button" (click)="goToAddAgent()">
       <span class="dot"></span>
       <span class="admin-text">Ajouter Agent</span>
