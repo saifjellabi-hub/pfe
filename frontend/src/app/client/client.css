@@ -1,34 +1,97 @@
+:host {
+  --bg-color: #0f111a;        
+  --text-color: #ffffff;      
+  --vermeg-red: #ED1B2F;      
+  --card-bg: #1e1f2a;
+  --border-color: #3e4451;
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.admin-main {
+  padding: 30px;
+}
+
 .container {
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* Style des cartes identique à la page Admin */
 .left, .right {
   width: 50%;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 30px;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  border: 1px solid var(--border-color);
 }
 
-.left {
-  background-color: #f2f2f2;
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.right {
-  background-color: #e6f0ff;
+/* Le petit point rouge Vermeg */
+h2::before {
+  content: "";
+  height: 10px;
+  width: 10px;
+  background-color: var(--vermeg-red);
+  border-radius: 50%;
+  display: inline-block;
 }
 
+/* Infos client */
+p {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 8px;
+}
+
+strong {
+  color: var(--vermeg-red);
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+/* Liste d'actions style Menu Admin */
 ul {
   list-style: none;
   padding: 0;
 }
 
 li {
-  margin: 10px 0;
+  margin-bottom: 15px;
 }
 
-a {
+.action-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background-color: transparent;
+  color: var(--text-color);
   text-decoration: none;
-  color: #0056b3;
-  font-weight: bold;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.action-link:hover {
+  background-color: rgba(237, 27, 47, 0.1);
+  border-color: var(--vermeg-red);
+  color: var(--vermeg-red);
+  transform: translateX(10px);
 }

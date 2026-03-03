@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule ,FormGroup, FormControl, Validators} from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -30,6 +30,7 @@ export class DemandeCredit {
 
 
   onSubmit() {
+
   const formValues = this.creditForm.getRawValue();
   if (this.creditForm.valid) {
     const mnt = Number(formValues.montant);

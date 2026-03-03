@@ -7,6 +7,8 @@ import { ResultatCredit } from './resultat-credit/resultat-credit';
 import { AdminLoginComponent } from './admin-login/admin-login';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
 import { AgentFormComponent } from './agent-form/agent-form';
+import { SimulationCredit } from './simulation-credit/simulation-credit';
+
 
 
 
@@ -24,6 +26,7 @@ export const routes: Routes = [
   { path: 'client', component: ClientComponent },
   { path: 'demande-credit', component: DemandeCredit },
   { path: 'resultat-credit', component: ResultatCredit },
-   { path: 'ajouter-agent', component: AgentFormComponent },
+  { path: 'ajouter-agent', component: AgentFormComponent },
+  { path: 'simulation-credit', component: SimulationCredit },
   { path: '**', redirectTo: 'client' }
 ];
