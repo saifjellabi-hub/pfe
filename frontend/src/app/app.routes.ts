@@ -24,8 +24,6 @@ export const routes: Routes = [
   { path: 'demande-credit', component: DemandeCredit },
   { path: 'resultat-credit', component: ResultatCredit },
    { path: 'ajouter-agent', component: AgentFormComponent },
-  { path: 'agent-login', component: AgentLoginComponent },
- 
   { path: '**', redirectTo: 'welcome' },
 
 ];
