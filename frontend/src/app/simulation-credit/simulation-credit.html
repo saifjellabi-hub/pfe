@@ -1,0 +1,77 @@
+<div class="admin-main">
+  <div class="white-card">
+    
+    <div class="section-header">
+      <div class="dot"></div>
+      <h2 style="margin: 0; font-weight: 700;">Simulateur de Crédit</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label>Votre Salaire Mensuel (DT)</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-wallet"></i>
+          <input type="number" [(ngModel)]="salaire" placeholder="Ex: 1500">
+        </div>
+      </div>
+
+      <div class="col-md-6 form-group">
+        <label>Durée du crédit (Mois)</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-hourglass-half"></i>
+          <select [(ngModel)]="duree">
+            <option value="12">12 mois (1 an)</option>
+            <option value="24">24 mois (2 ans)</option>
+            <option value="36">36 mois (3 ans)</option>
+            <option value="60">60 mois (5 ans)</option>
+            <option value="120">120 mois (10 ans)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button class="admin-button" (click)="calculer()">
+      <i class="fa-solid fa-calculator"></i> Calculer ma capacité
+    </button>
+
+
+    
+    <div *ngIf="resultat > 0" class="result-container">
+  <div class="row text-center">
+    
+    <div class="col-md-4">
+      <h5 style="opacity: 0.8; font-size: 0.9rem;">Montant du crédit</h5>
+      <div class="result-value" style="color: #28a745;">{{ montantCredit | number:'1.0-0' }} DT</div>
+      <small>(Le capital décaissé)</small>
+    </div>
+
+    <div class="col-md-4">
+      <h5 style="opacity: 0.8; font-size: 0.9rem;">Total Intérêts (8%)</h5>
+      <div class="result-value" style="color: var(--vermeg-red);">{{ totalInteret | number:'1.0-0' }} DT</div>
+      <small>(Coût du crédit)</small>
+    </div>
+
+    <div class="col-md-4">
+      <h5 style="opacity: 0.8; font-size: 0.9rem;">Total à rembourser</h5>
+      <div class="result-value" style="color: #ffc107;">{{ totalARembourser | number:'1.0-0' }} DT</div>
+      <small>({{ salaire * 0.4 | number:'1.0-0' }} DT / mois)</small>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<div class="mt-4 text-center">
+      <a routerLink="/client" style="color: var(--text-color); opacity: 0.6; text-decoration: none; font-size: 0.9rem;">
+        <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
+      </a>
+    </div>
+
+
+
+
+  </div>
+</div>

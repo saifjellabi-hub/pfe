@@ -1,0 +1,115 @@
+:host {
+  --bg-color: #0f111a;        
+  --text-color: #ffffff;      
+  --vermeg-red: #ED1B2F;      
+  --card-bg: #1e1f2a;
+  --border-color: #3e4451;
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.admin-main {
+  padding: 50px 20px;
+}
+
+.white-card {
+  background-color: var(--card-bg);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  background-color: var(--vermeg-red);
+  border-radius: 50%;
+}
+
+/* Inputs & Selects */
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.input-wrapper input, .input-wrapper select {
+  width: 100%;
+  padding: 12px 12px 12px 45px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: #e8ebed; 
+  color: #111;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--vermeg-red);
+  font-size: 1.1rem;
+}
+
+/* Bouton Calculer */
+.admin-button {
+  width: 100%;
+  background-color: var(--vermeg-red);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-button:hover {
+  background-color: #b31419;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(237, 27, 47, 0.3);
+}
+
+/* Zone de résultat */
+.result-container {
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-color);
+  border-radius: 10px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.result-value {
+  color: #28a745;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

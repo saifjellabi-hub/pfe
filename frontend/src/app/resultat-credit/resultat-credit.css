@@ -1,0 +1,98 @@
+:host {
+  --bg-color: #0f111a;        
+  --text-color: #ffffff;      
+  --vermeg-red: #ED1B2F;      
+  --card-bg: #1e1f2a;
+  --border-color: #3e4451;
+  --success-green: #28a745;
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.admin-main {
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.white-card {
+  background-color: var(--card-bg);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Le cercle de score */
+.score-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 8px solid var(--border-color);
+  border-top-color: var(--success-green); /* On pourra changer dynamiquement en rouge si besoin */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  background: rgba(40, 167, 69, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.score-circle:hover {
+  transform: scale(1.05);
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--success-green);
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* Alerte de décision */
+.decision-box {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-left: 5px solid var(--success-green);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.decision-box h3 {
+  color: var(--success-green);
+  margin-bottom: 10px;
+}
+
+/* Bouton Retour */
+.admin-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.admin-button:hover {
+  background-color: white;
+  color: #0f111a;
+  border-color: white;
+}

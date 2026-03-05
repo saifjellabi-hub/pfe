@@ -9,6 +9,9 @@ import { AdminLoginComponent } from './admin-login/admin-login';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
 import { AgentFormComponent } from './agent-form/agent-form';
 import { AgentLoginComponent } from './agent-login/agent-login';
+
+
+
 export const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
@@ -24,4 +27,5 @@ export const routes: Routes = [
   { path: 'agent-login', component: AgentLoginComponent },
  
   { path: '**', redirectTo: 'welcome' },
+
 ];

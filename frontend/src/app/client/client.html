@@ -1,23 +1,38 @@
-<div class="container" *ngIf="currentUser">
-  <!-- Bloc infos client -->
-  <div class="left">
-    <h2>Informations Client</h2>
-    <p><strong>Numéro de CIN :</strong> {{ currentUser.ncin }}</p>
-    <p><strong>Nom :</strong> {{ currentUser.nom }}</p>
-    <p><strong>Prénom :</strong> {{ currentUser.prenom }}</p>
-    <p><strong>RIB :</strong> {{ currentUser.rib }}</p>
-    <p><strong>Âge :</strong> {{ currentUser.age }}</p>
-    <p><strong>Téléphone :</strong> {{ currentUser.tel }}</p>
-    <p><strong>Solde :</strong> {{ currentUser.soldeInitial }} DT</p>
-    <p><strong>Email :</strong> {{ currentUser.email }}</p>
-  </div>
+<div class="admin-main" *ngIf="currentUser">
+  <div class="container">
+    
+    <div class="left">
+      <h2>Informations Client</h2>
+      <p><strong>NCIN:</strong> {{ currentUser.ncin }}</p>
+      <p><strong>Nom:</strong> {{ currentUser.nom }}</p>
+      <p><strong>Prénom:</strong> {{ currentUser.prenom }}</p>
+      <p><strong>RIB:</strong> {{ currentUser.rib }}</p>
+      <p><strong>Âge:</strong> {{ currentUser.age }} ans</p>
+      <p><strong>Téléphone:</strong> {{ currentUser.tel }}</p>
+      <p><strong>Solde:</strong> <span style="color: #28a745; font-weight: bold;">{{ currentUser.soldeInitial }} DT</span></p>
+      <p><strong>Email:</strong> {{ currentUser.email }}</p>
+    </div>
 
-  <!-- Bloc navigation -->
-  <div class="right">
-    <h2>Actions</h2>
-    <ul>
-      <li><a routerLink="/demande-credit">Demande de crédit</a></li>
-      <li><a routerLink="/resultat-credit">Résultat crédit</a></li>
-    </ul>
+    <div class="right">
+      <h2>Actions</h2>
+      <ul>
+        <li>
+          <a routerLink="/simulation-credit" class="action-link">
+            <i class="fa-solid fa-calculator"></i> Simulation crédit
+          </a>
+        </li>
+        <li>
+          <a routerLink="/demande-credit" class="action-link">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Demande de crédit
+          </a>
+        </li>
+        <li>
+          <a routerLink="/resultat-credit" class="action-link">
+            <i class="fa-solid fa-square-poll-vertical"></i> Résultat crédit
+          </a>
+        </li>
+      </ul>
+    </div>
+
   </div>
 </div>
