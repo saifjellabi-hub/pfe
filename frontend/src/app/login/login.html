@@ -1,6 +1,10 @@
 <header class="top-nav">
   <div class="admin-corner">
-    <nav>
+    
+      <nav style="display: flex; gap: 10px;"> <a routerLink="/agent-login" class="admin-button agent-btn">
+        <span class="dot agent-dot"></span>
+        <span class="admin-text">Espace Agent</span>
+      </a>
       <a routerLink="/admin-login" class="admin-button">
         <span class="dot"></span>
         <span class="admin-text">Espace Admin</span>
@@ -8,7 +12,6 @@
     </nav>
   </div>
 </header>
-
 
 <div class="login-container">
   <div class="header-logo">
@@ -22,8 +25,8 @@
   <i [class]="themeService.isDarkMode() ? 'fas fa-sun' : 'fas fa-moon'"></i>
 </div>
 
+    <div *ngIf="!showForgotForm">
     <h2 class="main-title">Login</h2>
-
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="input-field">
         <label>Numéro de CIN</label>
@@ -47,8 +50,11 @@
       </div>
 
       <div class="extra-options">
-        <a (click)="goToForgotPassword()" class="forgot-link">Mot de passe oublié ?</a>
-      </div>
+  <button type="button" (click)="goToForgotPassword()" class="forgot-link" style="background: none; border: none; color: #ff3333; cursor: pointer; text-decoration: underline;">
+    Mot de passe oublié ?
+  </button>
+</div>
+      
    <div *ngIf="isFirstTime" class="first-login-container">
   <div class="input-group fade-in">
     <label>Nouveau Mot de Passe</label>
@@ -57,8 +63,7 @@
         [type]="showPassword ? 'text' : 'password'" 
         formControlName="newPassword" 
         placeholder="Choisissez un nouveau mot de passe"
-        class="new-pass-input"
-      >
+        class="new-pass-input">
     </div>
   </div>
 
@@ -69,8 +74,7 @@
         [type]="showPassword ? 'text' : 'password'" 
         formControlName="confirmPassword" 
         placeholder="Confirmez votre mot de passe"
-        class="new-pass-input"
-      >
+        class="new-pass-input">
     </div>
   </div> <br>
   <div class="actions">
@@ -82,18 +86,101 @@
             {{ isFirstTime ? 'Activer mon compte' : 'Se connecter' }}
         </button>
     </div>
+</div><br>
+<div class="captcha-container">
+  <label style="display: block; margin-bottom: 10px; font-weight: bold;font-size: 0.85rem;">Veuillez saisir le code de vérification</label>
+  
+  <div class="captcha-wrapper" style="display: flex; align-items: center; gap: 15px;">
+    <div class="captcha-display" (click)="generateCaptcha()" title="Changer le code">
+      {{ generatedCaptcha }}
+    </div>
+    
+    <input type="text" 
+           formControlName="captcha"
+           placeholder="Saisir le code" 
+           maxlength="6" 
+           style="width: 140px; padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);">
+  </div>
 </div>
-      <div class="captcha-mock">
-        <input type="checkbox" id="robot" name="robot">
-        <label for="robot">Je ne suis pas un robot</label>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/RecaptchaLogo.svg" alt="captcha" width="25">
-      </div>
-
-      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">Connexion</button>
-
-      <div class="divider"></div>
-
+     
+ <div class="actions-row" style="display: flex; gap: 10px; margin-top: 20px;">
+      <button type="submit" class="btn-login" style="flex: 1;" [disabled]="loginForm.invalid">Connexion</button>
+      <button type="reset" class="btn-cancel" style="flex: 1;">Annuler</button>
+</div>
       <button type="button" class="btn-login" (click)="goToRegister()">Créer un nouveau compte</button>
     </form>
-  </div> </div> 
+  </div> 
+  <div *ngIf="showForgotForm" class="forgot-password-view fade-in">
+    <div *ngIf="resetStep === 1">
+      <h2 class="main-title">Trouvez votre compte</h2>
+      <p class="desc">Veuillez entrer votre adresse e-mail pour rechercher votre compte.</p>
+      <div class="input-field">
+        <input type="email" [(ngModel)]="resetEmail" name="resetEmail" placeholder="Adresse e-mail" class="custom-input" style="width: 100%; padding: 12px;">
+      </div>
+      <div class="actions-row" style="display: flex; gap: 10px; margin-top: 20px;">
+        <button type="button" class="btn-login" (click)="verifyAccount()" style="flex: 1;" [disabled]="isProcessing">
+  {{ isProcessing ? 'Envoi...' : 'Rechercher' }}
+</button>
+        <button type="button" class="btn-cancel" (click)="cancelForgot()" style="flex: 1;border: none; border-radius: 6px; padding: 10px; cursor: pointer;">Annuler</button>
+      </div>
+    </div>
 
+    <div *ngIf="resetStep === 2">
+      <h2 class="main-title">Code de sécurité</h2>
+      <p class="desc">Entrez le code à 6 chiffres envoyé à votre e-mail.</p>
+    <div class="input-field">
+    <input type="text" 
+           [(ngModel)]="inputOtp" 
+           name="inputOtp" 
+           placeholder="######" 
+           maxlength="6" 
+           style="text-align: center; font-size: 1.5rem; letter-spacing: 5px; width: 100%; padding: 12px; border-radius: 8px;">
+  </div>
+
+  <div class="actions-row" style="display: flex; gap: 10px;">
+    <button type="button" class="btn-login" (click)="verifyOtp()" style="flex: 2;" [disabled]="isProcessing">
+  {{ isProcessing ? 'Vérification...' : 'Continuer' }}
+</button>
+    <button type="button" class="btn-cancel" (click)="resetStep = 1" style="flex: 2;border: none; border-radius: 6px; cursor: pointer;">Retour</button>
+  </div>
+    </div>
+    <div *ngIf="resetStep === 3" class="reset-box fade-in">
+  <h2 class="main-title">Réinitialiser le mot de passe</h2>
+  <p class="desc">Veuillez saisir votre nouveau mot de passe.</p>
+  
+  <div class="input-field">
+    <label>Nouveau mot de passe</label>
+    <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
+      <input [type]="showPassword ? 'text' : 'password'" 
+             [(ngModel)]="newPassword" 
+             name="newPassword"
+             placeholder="********" 
+             class="custom-input">
+      <span class="toggle-eye" (click)="togglePassword()" style="position: absolute; right: 15px; cursor: pointer; color: var(--text-secondary);">
+        <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="input-field">
+    <label>Confirmer le mot de passe</label>
+    <div class="password-wrapper">
+      <input [type]="showPassword ? 'text' : 'password'" 
+             [(ngModel)]="confirmPassword" 
+             name="confirmPassword"
+             placeholder="********" 
+             class="custom-input">
+      <span class="toggle-eye" (click)="togglePassword()" style="position: absolute; right: 15px; cursor: pointer; color: var(--text-secondary);">
+        <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+      </span>
+    </div>
+  </div>
+
+<div class="actions-row" style="display: flex; gap: 10px;">
+    <button type="button" class="btn-login" (click)="resetPassword()" style="flex: 2;">Modifier</button>
+    <button type="button" class="btn-cancel" (click)="resetStep = 2" style="flex: 2;border: none; border-radius: 6px; cursor: pointer;">Retour</button>
+  </div>
+</div>
+</div>
+</div>
+</div>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,11 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vermeg.backend.entities.Client;
 import com.vermeg.backend.repositories.ClientRepository;
+import com.vermeg.backend.services.EmailService;
 
 @RestController
 @RequestMapping("/api/clients")
 @CrossOrigin(origins = "http://localhost:4200")
+
 public class ClientController {
+    private Map<String, String> otpStorage = new java.util.HashMap<>();
+    @Autowired
+private EmailService emailService;
 
     @Autowired
     private ClientRepository clientRepository;
@@ -111,5 +117,42 @@ public ResponseEntity<?> updateClient(@PathVariable int ncin, @RequestBody Clien
 
         return ResponseEntity.ok(clientRepository.save(client));
     }).orElse(ResponseEntity.notFound().build());
+}
+@PostMapping("/forgot-password")
+public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+    String email = request.get("email").trim();
+
+    if (!clientRepository.existsByEmail(email)) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email non trouvé");
+    }
+
+    String otpCode = String.valueOf((int)((Math.random() * 900000) + 100000));
+    
+    otpStorage.put(email, otpCode);
+
+    emailService.sendOtpEmail(email, otpCode);
+    return ResponseEntity.ok("Code envoyé !");
+}
+
+@PostMapping("/verify-otp")
+public ResponseEntity<?> verifyOtp(@RequestBody Map<String, String> request) {
+    String email = request.get("email").trim();
+    String code = request.get("otp").trim();
+    if (otpStorage.containsKey(email) && otpStorage.get(email).equals(code)) {
+        return ResponseEntity.ok("OTP_VALIDE");
+    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Code incorrect !");
+}
+@PostMapping("/reset-password")
+public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+    String email = request.get("email");
+    String newPassword = request.get("password");
+
+    return clientRepository.findByEmail(email).map(client -> {
+        client.setPassword(newPassword);
+        clientRepository.save(client);
+        otpStorage.remove(email); 
+        return ResponseEntity.ok("Mot de passe modifié avec succès !");
+    }).orElse(ResponseEntity.status(404).body("Client non trouvé"));
 }
 }

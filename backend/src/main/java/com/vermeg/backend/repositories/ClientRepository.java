@@ -13,5 +13,8 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
     
     Optional<Client> findByNcin(int ncin); 
     
-    Client findByEmail(String email);
+ @org.springframework.data.jpa.repository.Query("SELECT c FROM Client c WHERE c.email = :email")
+Optional<Client> findByEmail(@org.springframework.data.repository.query.Param("email") String email);
+
+boolean existsByEmail(String email);
 }
