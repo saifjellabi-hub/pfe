@@ -1,0 +1,126 @@
+.welcome-container {
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+              url('https://www.vermeg.com/wp-content/uploads/2023/06/Vermeg-Home-Hero.jpg'); /* جرب خلفية فيها بنية تحتية مالية */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar Style */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.logo img {
+  height: 40px;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.nav-btn.admin:hover {
+  background: var(--vermeg-red, #ff3333);
+  border-color: var(--vermeg-red, #ff3333);
+}
+
+.nav-btn.agent:hover {
+  background: white;
+  color: black;
+}
+
+/* Hero Section */
+.hero-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+/* الـ Button المزيان اللي سألت عليه */
+.cta-button {
+  background: var(--vermeg-red, #ff3333);
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(255, 51, 51, 0.5);
+}
+
+.cta-button i {
+  transition: transform 0.3s;
+}
+
+.cta-button:hover i {
+  transform: translateX(5px);
+}
+/* Animation Definition */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-content h1 {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-content p {
+  animation: fadeInUp 1s ease-out;
+}
+
+.cta-button {
+  animation: fadeInUp 1.2s ease-out;
+}

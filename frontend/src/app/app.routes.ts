@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { WelcomeComponent } from './welcome/welcome';
 import { LoginComponent } from './login/login';
 import { InscriptionComponent } from './inscription/inscription'; 
 import { ClientComponent } from './client/client';
@@ -8,13 +9,8 @@ import { AdminLoginComponent } from './admin-login/admin-login';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
 import { AgentFormComponent } from './agent-form/agent-form';
 import { AgentLoginComponent } from './agent-login/agent-login';
-
-
-
-
 export const routes: Routes = [
-
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'inscription', component: InscriptionComponent},
@@ -27,5 +23,5 @@ export const routes: Routes = [
    { path: 'ajouter-agent', component: AgentFormComponent },
   { path: 'agent-login', component: AgentLoginComponent },
  
-  { path: '**', redirectTo: 'client' },
+  { path: '**', redirectTo: 'welcome' },
 ];
