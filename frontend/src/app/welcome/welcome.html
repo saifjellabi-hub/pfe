@@ -1,27 +1,81 @@
-<div class="welcome-container">
-  <header class="main-header">
-    <div class="logo">
-      <img src="assets/vermeg.png" alt="Vermeg Logo">
-    </div>
-    <nav class="auth-buttons">
-      <a routerLink="/agent-login" class="nav-btn agent">Espace Agent</a>
-      <a routerLink="/admin-login" class="nav-btn admin">Espace Admin</a>
-    </nav>
+<div class="welcome-wrapper">
+  
+
+  <header class="top-nav">
+    
+    <div class="nav-container">
+      <img src="assets/vermeg.png" alt="Vermeg" class="vermeg-logo-nav">
+      
+      <div class="right-menu">
+        <div class="theme-switch" (click)="toggleTheme()">
+          <i [class]="themeService.isDarkMode() ? 'fas fa-sun' : 'fas fa-moon'"></i>
+        </div>
+        <a routerLink="/agent-login" class="admin-button ">
+        <span class="dot"></span>
+        <span class="admin-text">Espace Agent</span>
+      </a>
+      <a routerLink="/admin-login" class="admin-button">
+        <span class="dot"></span>
+        <span class="admin-text">Espace Admin</span>
+      </a>
+    
+  </div>
+      </div>
+    
   </header>
 
   <main class="hero-section">
     <div class="hero-content">
-      <h1>Système Intelligent d’Analyse du Risque de Crédit</h1>
-      <p>Une solution innovante pour une gestion financière sécurisée et optimisée.</p>
-      
-      <button class="cta-button" routerLink="/login">
-        <span>Accéder à l'Espace Client</span>
+      <div class="brand-identity">
+        <i class="fas fa-hand-holding-usd project-icon"></i>
+        <span class="project-name">CreditAI <small>Intelligence</small></span>
+      </div>
+
+      <h1 class="main-title">Optimisez vos Décisions de <br><span>Crédit Bancaire</span></h1>
+      <div class="description-container">
+     <p class="description">
+  <strong>Automatiser</strong> l’évaluation du risque de crédit à l’aide de 
+  <span class="highlight-red">l’intelligence artificielle</span> afin de fournir un 
+  <strong>score de risque précis</strong> et aider les banques à prendre des décisions 
+  <span class="text-white">rapides et fiables</span>.
+</p></div>
+
+      <button class="main-cta" routerLink="/login">
+        Accéder à l'Espace Client
         <i class="fas fa-arrow-right"></i>
       </button>
     </div>
-  </main>
+   <div class="chatbot-wrapper" [class.open]="isChatOpen">
+  <div class="chat-header" (click)="toggleChat()">
+    <div class="bot-info">
+      <i class="fas fa-robot"></i>
+      <span>Assistant CreditAI</span>
+    </div>
+    <i class="fas" [class.fa-chevron-down]="isChatOpen" [class.fa-chevron-up]="!isChatOpen"></i>
+  </div>
 
-  <footer class="simple-footer">
-    <p>&copy; 2026 Vermeg. Tous droits réservés.</p>
-  </footer>
+  <div class="chat-body" #chatContainer>
+    <div *ngFor="let msg of messages" [ngClass]="{'user-msg': msg.type === 'user', 'bot-msg': msg.type === 'bot'}">
+      <div class="message-content">{{ msg.text }}</div>
+    </div>
+  </div>
+
+  <div class="suggestions-list" *ngIf="filteredSuggestions.length > 0">
+    <div *ngFor="let suggestion of filteredSuggestions" 
+         (click)="selectSuggestion(suggestion)" 
+         class="suggestion-item">
+      {{ suggestion }}
+    </div>
+  </div>
+
+  <div class="chat-footer">
+    <input type="text" 
+           [(ngModel)]="userInput" 
+           (input)="onInputChange()" 
+           (keydown.enter)="sendMessage(); $event.preventDefault()" 
+           placeholder="Posez votre question...">
+    <button (click)="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+  </main>
 </div>

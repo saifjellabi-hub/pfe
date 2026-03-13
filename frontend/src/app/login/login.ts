@@ -38,13 +38,13 @@ goToForgotPassword() {
     this.cdr.detectChanges();
   }
 verifyAccount() {
-  if (this.isProcessing) return; // إذا فمة طلب قاعد يخدم، أخرج
+  if (this.isProcessing) return;
   this.isProcessing = true;
 
   this.clientService.forgotPassword(this.resetEmail).pipe(take(1)).subscribe({
     next: (res: any) => {
       this.resetStep = 2;
-      this.isProcessing = false; // رجعها false كملنا
+      this.isProcessing = false; 
       this.cdr.detectChanges();
       alert("Un code de vérification a été envoyé.");
     },
@@ -67,9 +67,8 @@ verifyOtp() {
   this.clientService.verifyOtp(this.resetEmail, this.inputOtp).pipe(take(1)).subscribe({
     next: (res) => {
       this.isProcessing = false;
-      // التغيير الفوري هنا
       this.resetStep = 3; 
-      this.cdr.markForCheck(); // أقوى من detectChanges ساعات
+      this.cdr.markForCheck(); 
       this.cdr.detectChanges();
       
       console.log("Passage à l'étape 3 réussi");
