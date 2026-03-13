@@ -52,18 +52,15 @@ public class ChatController {
         knowledgeBase.put("refusé|رفض", "Le refus peut être dû à un revenu insuffisant, un mauvais historique bancaire, ou une détection de haut risque par notre modèle.");
         knowledgeBase.put("retard|non-paiement|عدم السداد|مشكلة", "En cas de défaut : pénalités de retard, inscription sur la liste noire, saisie des garanties, ou poursuites judiciaires.");
 
-        // --- 9. حقوق الحريف (Droits) ---
+        
         knowledgeBase.put("droit|contrat|حقوق", "Le client a le droit de connaître le taux effectif global (TEG), le montant total à rembourser, et le droit au remboursement anticipé.");
 
-        // --- 10. حدود الصلاحيات (الأسئلة الدقيقة) ---
         knowledgeBase.put("montant|exact|حساب|فلوس", "Pour obtenir un tableau d'amortissement précis ou un montant exact, veuillez contacter directement votre conseiller Bank car je n'ai pas accès à vos données privées.");
     }
 
     @PostMapping("/chat")
     public Map<String, String> chat(@RequestBody Map<String, String> payload) {
         String userText = payload.get("text").toLowerCase();
-        
-        // البحث المتقدم عن الكلمات المفتاحية
         String response = knowledgeBase.entrySet().stream()
                 .filter(entry -> Arrays.stream(entry.getKey().split("\\|")).anyMatch(userText::contains))
                 .map(Map.Entry::getValue)
