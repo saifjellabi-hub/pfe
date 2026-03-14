@@ -16,14 +16,28 @@
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
+  justify-content:end;
   align-items: center;
 }
 
 .vermeg-logo-nav {
-  height: 35px;
+    width: 200px; 
+  height: auto;
+  display: block;
 }
-
+.header-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #ffffff; 
+  padding: 15px 25px;      
+  border-radius: 0 0 15px 15px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .right-menu {
   display: flex;
   align-items: center;
@@ -89,7 +103,7 @@
   --vermeg-red: #ED1B2F;
 }
 
-/* الـ Hero Section في الوسط */
+
 .hero-section {
   height: 80vh;
   display: flex;
@@ -129,15 +143,10 @@
   color: var(--vermeg-red, #ED1B2F);
 }
 .description-container {
-  /* 1. زيد سطر أحمر عمودي على اليسار */
-  border-left: 3px solid var(--vermeg-red); /* استعمل الـ variable متاع Vermeg Red */
-  
-  /* 2. زيد مسافة بين الخط العمودي والكتيبة */
+  border-left: 3px solid var(--vermeg-red);
   padding-left: 20px; 
-  
-  /* 3. تأكد إنو الـ container واخذ الـ width المناسب */
   max-width: 700px;
-  margin-bottom: 40px; /* مسافة بين الوصف والـ button */
+  margin-bottom: 40px;
 }
 .description {
   font-size: 1.2rem;
@@ -183,13 +192,13 @@
   border-radius: 15px 15px 0 0;
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   z-index: 1000;
-  transform: translateY(calc(100% - 50px)); /* يبان منو كان الـ header */
+  transform: translateY(calc(100% - 50px));
   transition: transform 0.4s ease-in-out;
   z-index: 9999;
 }
 
 .chatbot-wrapper.open {
-  transform: translateY(0); /* يطلع كامل كي تنزل عليه */
+  transform: translateY(0);
 }
 
 .chat-header {
@@ -242,7 +251,7 @@
   color: var(--text-color);
   padding: 5px;
 }
-/* تنسيق قائمة الاقتراحات */
+
 .suggestions-list {
     background: white;
     border-top: 1px solid #eee;
@@ -265,7 +274,6 @@
     color: #007bff;
 }
 
-/* تأكد إنو الـ footer ديما تحت الاقتراحات */
 .chat-footer {
     border-top: 1px solid #eee;
 }

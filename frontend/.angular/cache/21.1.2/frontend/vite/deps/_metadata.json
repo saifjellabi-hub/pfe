@@ -1,79 +1,70 @@
 {
-  "hash": "6977b0a5",
-  "configHash": "c5c264e5",
+  "hash": "f923ac97",
+  "configHash": "a7d3b340",
   "lockfileHash": "38685dc3",
-  "browserHash": "00839a5d",
+  "browserHash": "a1fbaa57",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "ba139754",
+      "fileHash": "1fc60cf2",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "65dce0d6",
+      "fileHash": "29c09c5f",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "7ee89376",
+      "fileHash": "79985fa5",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "c65933c4",
+      "fileHash": "e4742875",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "1782e7da",
+      "fileHash": "312a00c4",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "db0c1e09",
+      "fileHash": "056e79e1",
       "needsInterop": false
     },
     "rxjs/operators": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
       "file": "rxjs_operators.js",
-      "fileHash": "07c05170",
-      "needsInterop": false
-    },
-    "@google/generative-ai": {
-      "src": "../../../../../../node_modules/@google/generative-ai/dist/index.mjs",
-      "file": "@google_generative-ai.js",
-      "fileHash": "3dc3bb49",
+      "fileHash": "3e101040",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-DN74V4AM": {
-      "file": "chunk-DN74V4AM.js"
+    "chunk-6ZL5YLTI": {
+      "file": "chunk-6ZL5YLTI.js"
     },
-    "chunk-2VXZSM6K": {
-      "file": "chunk-2VXZSM6K.js"
+    "chunk-UQ7V7PO7": {
+      "file": "chunk-UQ7V7PO7.js"
     },
-    "chunk-IXMMZQV2": {
-      "file": "chunk-IXMMZQV2.js"
+    "chunk-KWW7CK4Y": {
+      "file": "chunk-KWW7CK4Y.js"
     },
-    "chunk-T4XLCUCI": {
-      "file": "chunk-T4XLCUCI.js"
+    "chunk-NKYHBQTJ": {
+      "file": "chunk-NKYHBQTJ.js"
     },
-    "chunk-7DJNGZPR": {
-      "file": "chunk-7DJNGZPR.js"
+    "chunk-2MHSSV5H": {
+      "file": "chunk-2MHSSV5H.js"
     },
-    "chunk-SXVSN3U5": {
-      "file": "chunk-SXVSN3U5.js"
-    },
-    "chunk-GOMI4DH3": {
-      "file": "chunk-GOMI4DH3.js"
+    "chunk-K3WGHAM4": {
+      "file": "chunk-K3WGHAM4.js"
     }
   }
 }

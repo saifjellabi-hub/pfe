@@ -4,8 +4,9 @@
   <header class="top-nav">
     
     <div class="nav-container">
-      <img src="assets/vermeg.png" alt="Vermeg" class="vermeg-logo-nav">
-      
+      <div class="header-logo">
+      <img src="assets/vermeg.png" alt="Vermeg" class="vermeg-logo-nav ">
+      </div>
       <div class="right-menu">
         <div class="theme-switch" (click)="toggleTheme()">
           <i [class]="themeService.isDarkMode() ? 'fas fa-sun' : 'fas fa-moon'"></i>
