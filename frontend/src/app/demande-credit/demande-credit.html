@@ -1,62 +1,129 @@
 <div class="admin-main">
-  <div class="white-card">
-    
-    <div class="section-header">
-      <div class="dot"></div>
-      <span>Nouvelle Demande de Crédit</span>
+  <div class="white-card shadow-lg">
+    <div class="stepper-wrapper">
+      <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+        <div class="step-icon"><i class="fa-solid fa-wallet"></i></div>
+        <span class="step-label">Crédit</span>
+      </div>
+      <div class="line"></div>
+      <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+        <div class="step-icon"><i class="fa-solid fa-user-tie"></i></div>
+        <span class="step-label">Profil</span>
+      </div>
+      <div class="line"></div>
+      <div class="step" [class.active]="currentStep >= 3">
+        <div class="step-icon"><i class="fa-solid fa-user-check"></i></div>
+        <span class="step-label">Analyse</span>
+      </div>
     </div>
 
-    <form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
-      
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>Montant du crédit (TND)</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-hand-holding-dollar"></i>
-            <input type="number" formControlName="montant" placeholder="Ex: 5000">
+    <form [formGroup]="creditForm">
+      <div *ngIf="currentStep === 1" class="step-content animate-in">
+        <h4 class="section-title">Paramètres du Crédit & Revenus</h4>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Montant Souhaité (TND)</label>
+            <input type="number" formControlName="montant" class="form-input" placeholder="Ex: 20000">
           </div>
-        </div>
-
-        <div class="col-md-6 form-group">
-          <label>Durée (Mois)</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-clock"></i>
-            <input type="number" formControlName="duree" placeholder="Ex: 24">
+          <div class="col-md-6 form-group">
+            <label>Durée du Remboursement (Mois)</label>
+            <input type="number" formControlName="duree" class="form-input" placeholder="Ex: 48">
+          </div>
+          <div class="col-md-6 form-group mt-3">
+            <label>Revenu Mensuel Net (TND)</label>
+            <input type="number" formControlName="revenuMensuel" class="form-input">
+          </div>
+          <div class="col-md-6 form-group mt-3">
+            <label>Mensualités Crédits Actuels (TND)</label>
+            <input type="number" formControlName="autresCredits" class="form-input">
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>Revenu Mensuel</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-wallet"></i>
-            <input type="number" formControlName="revenuMensuel">
+      <div *ngIf="currentStep === 2" class="step-content animate-in">
+        <h4 class="section-title">Stabilité & Emploi</h4>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Poste / Profession</label>
+            <input type="text" formControlName="professionDetail" class="form-input" placeholder="Ex: Ingénieur">
           </div>
-        </div>
-
-        <div class="col-md-6 form-group">
-          <label>Objet du crédit</label>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-list"></i>
-            <select formControlName="objetCredit">
-              <option value="immobilier">Immobilier</option>
-              <option value="automobile">Automobile</option>
-              <option value="consommation">Consommation</option>
+          <div class="col-md-6 form-group">
+            <label>Type de Contrat</label>
+            <select formControlName="typeEmploi" class="form-input">
+              <option value="CDI">Contrat CDI</option>
+              <option value="CDD">Contrat CDD</option>
+              <option value="Freelance">Libéral / Freelance</option>
+            </select>
+          </div>
+          <div class="col-md-6 form-group mt-3">
+            <label>Ancienneté (Années)</label>
+            <input type="number" formControlName="anciennete" class="form-input">
+          </div>
+          <div class="col-md-6 form-group mt-3">
+            <label>Secteur d'Activité</label>
+            <select formControlName="secteurActivite" class="form-input">
+              <option value="public">Secteur Étatique</option>
+              <option value="tech">Technologie / IT</option>
+              <option value="sante">Santé</option>
+              <option value="tourisme">Tourisme</option>
             </select>
           </div>
         </div>
       </div>
 
-      <div class="d-flex justify-content-between mt-4">
-        <button type="button" class="admin-button" routerLink="/client">
-          Annuler
-        </button>
-        <button type="button" class="admin-button primary" (click)="onSubmit()" [disabled]="creditForm.invalid">
-          Analyser le dossier <i class="fa-solid fa-bolt"></i>
-        </button>
+      <div *ngIf="currentStep === 3" class="step-content animate-in">
+        <h4 class="section-title">Détails Personnels & Charges</h4>
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label>Âge</label>
+            <input type="number" formControlName="age" class="form-input">
+          </div>
+          <div class="col-md-4 form-group">
+            <label>Situation Familiale</label>
+            <select formControlName="situationFamiliale" class="form-input">
+              <option value="celibataire">Célibataire</option>
+              <option value="marie">Marié(e)</option>
+              <option value="divorce">Divorcé(e)</option>
+            </select>
+          </div>
+          <div class="col-md-4 form-group" *ngIf="creditForm.get('situationFamiliale')?.value === 'divorce'">
+            <label>Pension Alimentaire (TND)</label>
+            <input type="number" formControlName="pensionAlimentaire" class="form-input">
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-4 form-group">
+            <label>Nombre d'enfants</label>
+            <input type="number" formControlName="nbEnfants" class="form-input">
+          </div>
+          <div class="col-md-8 form-group" *ngIf="(creditForm.get('nbEnfants')?.value || 0) > 0">
+            <label>Âges des enfants (ex: 4, 10)</label>
+            <input type="text" formControlName="agesEnfants" class="form-input">
+          </div>
+        </div>
       </div>
 
+      <div class="footer-actions mt-5">
+  <a routerLink="/client" *ngIf="currentStep === 1">
+    <button type="button" class="btn-secondary">
+      <i class="fa-solid fa-house"></i> Retour à l'accueil
+    </button>
+  </a>
+
+  <button type="button" class="btn-secondary" (click)="prevStep()" *ngIf="currentStep > 1">
+    <i class="fa-solid fa-arrow-left"></i> Retour
+  </button>
+
+  <div class="right-actions">
+    <button type="button" class="btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">
+      Continuer <i class="fa-solid fa-arrow-right"></i>
+    </button>
+
+    <button type="submit" class="btn-analyze" (click)="onSubmit()" *ngIf="currentStep === 3" [disabled]="creditForm.invalid">
+      Lancer l'Analyse IA <i class="fa-solid fa-microchip"></i>
+    </button>
+  </div>
+</div>
     </form>
   </div>
 </div>

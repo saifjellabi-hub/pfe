@@ -10,90 +10,229 @@
   min-height: 100vh;
 }
 
+/* --- الخلفية العامة والـ Card --- */
+/* --- الخلفية العامة والـ Card --- */
 .admin-main {
-  padding: 40px 30px;
+    background-color: #0f111a;
+    padding: 30px;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* On utilise ta classe white-card pour le formulaire */
 .white-card {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  max-width: 800px;
-  margin: 0 auto;
+    background: #1a1d29;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    color: white;
+    max-width: 950px; /* كبرناها شوية باش تهز الـ row الجديد */
+    margin: 0 auto;
 }
 
-.section-header {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 25px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-color);
+/* --- زينة الـ Stepper (الخطوات) --- */
+.stepper-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.dot {
-  height: 12px;
-  width: 12px;
-  background-color: var(--vermeg-red);
-  border-radius: 50%;
+.line {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    height: 2px; /* رققناه شوية باش يجي أزين */
+    background-color: #2d3142;
+    width: 100%;
+    z-index: 1;
 }
 
-/* Style des inputs comme ton search-box admin */
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    width: 80px;
+}
+
+.step-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #1a1d29;
+    border: 2px solid #2d3142;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #555;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-label {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* الـ Step النشطة (Vermeg Red) */
+.step.active .step-icon {
+    border-color: #ff0000;
+    color: #ff0000;
+    box-shadow: 0 0 20px rgba(255,0,0,0.25);
+    transform: scale(1.1);
+}
+
+.step.active .step-label {
+    color: #fff;
+}
+
+/* الـ Step المكتملة */
+.step.completed .step-icon {
+    background-color: #ff0000;
+    border-color: #ff0000;
+    color: white;
+}
+
+/* --- العناوين والـ Inputs --- */
+.section-title {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 30px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background-color: #ff0000;
+    border-radius: 2px;
+}
+
 .form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-color);
+    color: #aaa;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-.input-wrapper {
-  position: relative;
-  margin-bottom: 20px;
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    background-color: #11141f;
+    border: 1px solid #2d3142;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    transition: all 0.3s;
 }
 
-.input-wrapper input, .input-wrapper select {
-  width: 100%;
-  padding: 12px 12px 12px 40px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background-color: #e8ebed; 
-  color: #111;
-  font-size: 0.95rem;
+.form-input:focus {
+    outline: none;
+    border-color: #ff0000;
+    background-color: #141824;
 }
 
-.input-wrapper i {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--vermeg-red);
+/* تنسيق خاص للـ Select */
+select.form-input {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff0000'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 18px;
 }
 
-/* Bouton style Admin */
-.admin-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: transparent;
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+/* --- الأزرار (Buttons) --- */
+.footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    border-top: 1px solid #2d3142;
+    padding-top: 30px;
+    margin-top: 20px;
 }
 
-.admin-button.primary {
-  background-color: var(--vermeg-red);
-  border: none;
-  color: white;
+.btn-secondary {
+   text-decoration: none;
+    background: transparent;
+    border: 1.5px solid #2d3142;
+    color: #aaa;
+    padding: 12px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
-.admin-button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+.btn-secondary:hover {
+  text-decoration: none;
+    border-color: #ff0000;
+    color: #ff0000;
+     padding: 12px 35px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+}
+
+.btn-primary, .btn-analyze {
+    background: #ff0000;
+    border: none;
+    color: white;
+    padding: 12px 35px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover, .btn-analyze:hover {
+    background: #d40000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+}
+
+.btn-primary:disabled {
+    background-color: #2d3142;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* --- الـ Summary Box (النفقة والملاحظات) --- */
+.summary-box {
+    background-color: rgba(255, 0, 0, 0.05);
+    border: 1px dashed rgba(255, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    color: #ccc;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+/* --- Animations --- */
+.step-content.animate-in {
+    animation: fadeInScale 0.4s ease-out;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.98) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
