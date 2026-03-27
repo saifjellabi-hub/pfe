@@ -13,7 +13,7 @@
       <div class="line"></div>
       <div class="step" [class.active]="currentStep >= 3">
         <div class="step-icon"><i class="fa-solid fa-user-check"></i></div>
-        <span class="step-label">Analyse</span>
+        <span class="step-label">Envoyer</span>
       </div>
     </div>
 
@@ -125,9 +125,10 @@
           <button type="button" class="btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">
             Continuer <i class="fa-solid fa-arrow-right"></i>
           </button>
-          <button type="submit" class="btn-analyze" (click)="onSubmit()" *ngIf="currentStep === 3" [disabled]="creditForm.invalid">
-            Lancer l'Analyse IA <i class="fa-solid fa-microchip"></i>
-          </button>
+         <button type="submit" class="btn-analyze" *ngIf="currentStep === 3" [disabled]="creditForm.invalid">
+   Envoyer la Demande <i class="fa-solid fa-paper-plane"></i>
+</button>
+          
         </div>
       </div>
     </form>

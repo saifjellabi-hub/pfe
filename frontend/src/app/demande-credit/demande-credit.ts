@@ -63,25 +63,38 @@ export class DemandeCredit {
   nextStep() { if (this.currentStep < 3) this.currentStep++; }
   prevStep() { if (this.currentStep > 1) this.currentStep--; }
 
- onSubmit() {
+onSubmit() {
   if (this.creditForm.valid) {
     const data = this.creditForm.getRawValue();
     
-    // تحويل السنين لأشهر في الحسبة: duree * 12
+    // الحسبة متاع السنين اللي ركحناها
     const dureeEnMois = Number(data.duree) * 12;
     const mensualite = (Number(data.montant) / dureeEnMois);
-    
     const totalCharges = mensualite + Number(data.autresCredits) + Number(data.pensionAlimentaire);
     const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
-    
-    // نبعثو البيانات للـ Service مع المدة بالأشهر باش الـ AI يفهمها
-    this.creditService.setDemandeData({ 
-      ...data, 
-      dureeMois: dureeEnMois, // بعثنا النسخة المحولة للأشهر
-      dtiRatio: dti 
+
+    const finalPayload = {
+      ...data,
+      duree: dureeEnMois, // نبعثوها بالأشهر للـ DB والـ AI
+      dtiRatio: dti,
+      status: 'En attente' // الحالة الأولية للطلب
+    };
+
+    // نبعثو للـ Backend (Spring Boot) وهو يتكفل بالباقي
+    this.creditService.createDemande(finalPayload).subscribe({
+      next: (response) => {
+        console.log('Demande envoyée avec succès. Analyse IA en cours...', response);
+        // نخزنو النتيجة في السيرفيس باش نظهروها في صفحة الـ Resultat
+        this.creditService.setDemandeData(response);
+        this.router.navigate(['/resultat-credit']);
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'envoi de la demande de crédit :', err);
+      }
     });
-    
-    this.router.navigate(['/resultat-credit']);
+  }
+  else {
+    console.warn('Le formulaire est invalide. Veuillez vérifier les champs.');
   }
 }
 }
