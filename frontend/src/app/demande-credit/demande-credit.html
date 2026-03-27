@@ -22,12 +22,21 @@
         <h4 class="section-title">Paramètres du Crédit & Revenus</h4>
         <div class="row">
           <div class="col-md-6 form-group">
-            <label>Montant Souhaité (TND)</label>
+            <label>Montant du Crédit (TND)</label>
             <input type="number" formControlName="montant" class="form-input" placeholder="Ex: 20000">
           </div>
           <div class="col-md-6 form-group">
   <label>Durée du Remboursement (Années)</label>
   <input type="number" formControlName="duree" class="form-input" placeholder="Ex: 5">
+</div>
+<div class="col-md-12 form-group mt-3">
+  <label>Objet du Crédit</label>
+  <select formControlName="objetCredit" class="form-input">
+    <option value="immobilier">Achat Maison / Terrain</option>
+    <option value="Achat Véhicule">Achat Véhicule</option>
+    <option value="consommation">Consommation / Mariage</option>
+    <option value="travaux">Rénovation / Travaux</option>
+  </select>
 </div>
           <div class="col-md-6 form-group mt-3">
             <label>Revenu Mensuel Net (TND)</label>
@@ -37,6 +46,17 @@
             <label>Mensualités Crédits Actuels (TND)</label>
             <input type="number" formControlName="autresCredits" class="form-input">
           </div>
+          <div class="col-md-12 form-group mt-3">
+  <label>Nature de la Garantie</label>
+  <select formControlName="garantie" class="form-input">
+    <option value="Cession sur salaire">Cession sur salaire</option>
+    <option value="Hypothèque Immobilière">Hypothèque Immobilière</option>
+    <option value="Gage de véhicule">Gage de véhicule</option>
+    <option value="Caution Personnelle">Caution Personnelle</option>
+    <option value="Gage sur bijoux">Gage sur bijoux</option>
+    <option value="Dépôt à terme">Dépôt à terme</option>
+  </select>
+</div>
         </div>
       </div>
 
@@ -107,6 +127,21 @@
             </div>
           </div>
         </div>
+       <div class="upload-container mt-4">
+    <label class="upload-title">📑 Pièces Justificatives</label>
+    <p class="upload-subtitle">Veuillez scanner et joindre votre Fiche de paie et CIN.</p>
+
+    <input type="file" id="fileUpload" (change)="onFileSelected($event)" hidden accept=".pdf,.jpg,.png">
+    
+    <label for="fileUpload" class="custom-file-upload">
+        <i class="fas fa-cloud-upload-alt"></i> 
+        {{ selectedFileName ? selectedFileName : 'Choisir un fichier' }}
+    </label>
+
+    <div *ngIf="selectedFileName" class="selected-badge">
+        <i class="fas fa-check-circle"></i> Fichier prêt à l'envoi
+    </div>
+</div>
       </div>
 
       <div class="footer-actions mt-5">

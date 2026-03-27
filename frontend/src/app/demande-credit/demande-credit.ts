@@ -13,6 +13,8 @@ import { CreditService } from '../services/credit.service';
 })
 export class DemandeCredit {
   currentStep = 1;
+  selectedFile: File | null = null;
+selectedFileName: string = '';
 
   creditForm = new FormGroup({
     // --- STEP 1: INFOS CRÉDIT & FINANCE ---
@@ -20,6 +22,7 @@ export class DemandeCredit {
    duree: new FormControl('', [Validators.required, Validators.min(1), Validators.max(25)]),
     revenuMensuel: new FormControl('', [Validators.required, Validators.min(500)]),
     autresCredits: new FormControl(0, [Validators.min(0)]),
+    garantie: new FormControl('Cession sur salaire', [Validators.required]),
     tauxInteret: new FormControl(8.5, [Validators.required]),
 
     // --- STEP 2: PROFIL PROFESSIONNEL ---
@@ -34,7 +37,8 @@ export class DemandeCredit {
     pensionAlimentaire: new FormControl(0),
     nbEnfants: new FormControl(0, [Validators.min(0)]),
     agesEnfants: new FormArray([]), // بدلناها لـ FormArray باش تهز بزاف خانات
-    objetCredit: new FormControl('immobilier', [Validators.required])
+    objetCredit: new FormControl('immobilier', [Validators.required]),
+    justificatifUrl: new FormControl('')
   });
 
   constructor(private creditService: CreditService, private router: Router) {}
@@ -105,6 +109,16 @@ onSubmit() {
       if (controlErrors != null) {
         console.log('Champ avec erreur: ' + key, controlErrors);
       }
+    });
+  }
+}
+onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+  if (this.selectedFile) {
+    this.selectedFileName = this.selectedFile.name;
+    // نزيدو اسم الملف للـ Form متاعنا
+    this.creditForm.patchValue({
+      justificatifUrl: this.selectedFileName
     });
   }
 }

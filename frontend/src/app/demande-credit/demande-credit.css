@@ -236,3 +236,52 @@ select.form-input {
     from { opacity: 0; transform: scale(0.98) translateY(10px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
 }
+.upload-container {
+    background: #f8f9fa;
+    border: 2px dashed #ced4da;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.upload-container:hover {
+    border-color: #ff0000; /* أحمر كيم الـ Button متاعك */
+}
+
+.upload-title {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    font-size: 1.1rem;
+}
+
+.upload-subtitle {
+    font-size: 0.85rem;
+    color: #070e14;
+    margin-bottom: 15px;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 25px;
+    cursor: pointer;
+    background: #ffffff;
+    color: #ff0000;
+    border: 2px solid #ff0000;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.custom-file-upload:hover {
+    background: #ff0000;
+    color: #fff;
+}
+
+.selected-badge {
+    margin-top: 10px;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
