@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'; // زدنا FormArray هوني
 import { RouterModule, Router } from '@angular/router';
-import { CreditService } from '../services/credit';
+import { CreditService } from '../services/credit.service';
 
 @Component({
   selector: 'app-demande-credit',
@@ -17,10 +17,10 @@ export class DemandeCredit {
   creditForm = new FormGroup({
     // --- STEP 1: INFOS CRÉDIT & FINANCE ---
     montant: new FormControl('', [Validators.required, Validators.min(1000)]),
-    duree: new FormControl('', [Validators.required, Validators.min(6), Validators.max(300)]),
+   duree: new FormControl('', [Validators.required, Validators.min(1), Validators.max(25)]),
     revenuMensuel: new FormControl('', [Validators.required, Validators.min(500)]),
     autresCredits: new FormControl(0, [Validators.min(0)]),
-    tauxInteret: new FormControl(8.5, [Validators.required]), // نسبة الفائدة الافتراضية
+    tauxInteret: new FormControl(8.5, [Validators.required]),
 
     // --- STEP 2: PROFIL PROFESSIONNEL ---
     typeEmploi: new FormControl('CDI', [Validators.required]),
@@ -33,25 +33,55 @@ export class DemandeCredit {
     situationFamiliale: new FormControl('celibataire', [Validators.required]),
     pensionAlimentaire: new FormControl(0),
     nbEnfants: new FormControl(0, [Validators.min(0)]),
-    agesEnfants: new FormControl(''), // نص مثل: "5, 12"
+    agesEnfants: new FormArray([]), // بدلناها لـ FormArray باش تهز بزاف خانات
     objetCredit: new FormControl('immobilier', [Validators.required])
   });
 
   constructor(private creditService: CreditService, private router: Router) {}
 
+  // --- الهوني الخدمة الجديدة ---
+  
+  // Getter باش نوصلو لخانة الأعمار في الـ HTML بسهولة
+  get agesEnfants() {
+    return this.creditForm.get('agesEnfants') as FormArray;
+  }
+
+  // الـ Function اللي تزيد وتنقص الخانات حسب عدد الصغار
+  onNbEnfantsChange() {
+    const nb = this.creditForm.get('nbEnfants')?.value || 0;
+    
+    // نمسحو الخانات القديمة ونزيدو جدد حسب الرقم اللي تحط
+    while (this.agesEnfants.length !== 0) {
+      this.agesEnfants.removeAt(0);
+    }
+
+    for (let i = 0; i < nb; i++) {
+      this.agesEnfants.push(new FormControl('', Validators.required));
+    }
+  }
+
   nextStep() { if (this.currentStep < 3) this.currentStep++; }
   prevStep() { if (this.currentStep > 1) this.currentStep--; }
 
-  onSubmit() {
-    if (this.creditForm.valid) {
-      const data = this.creditForm.getRawValue();
-      // حساب الـ DTI (Debt-to-Income) لبعثه للـ AI
-      const mensualite = (Number(data.montant) / Number(data.duree));
-      const totalCharges = mensualite + Number(data.autresCredits) + Number(data.pensionAlimentaire);
-      const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
-
-      
-      this.router.navigate(['/resultat-credit']);
-    }
+ onSubmit() {
+  if (this.creditForm.valid) {
+    const data = this.creditForm.getRawValue();
+    
+    // تحويل السنين لأشهر في الحسبة: duree * 12
+    const dureeEnMois = Number(data.duree) * 12;
+    const mensualite = (Number(data.montant) / dureeEnMois);
+    
+    const totalCharges = mensualite + Number(data.autresCredits) + Number(data.pensionAlimentaire);
+    const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
+    
+    // نبعثو البيانات للـ Service مع المدة بالأشهر باش الـ AI يفهمها
+    this.creditService.setDemandeData({ 
+      ...data, 
+      dureeMois: dureeEnMois, // بعثنا النسخة المحولة للأشهر
+      dtiRatio: dti 
+    });
+    
+    this.router.navigate(['/resultat-credit']);
   }
+}
 }

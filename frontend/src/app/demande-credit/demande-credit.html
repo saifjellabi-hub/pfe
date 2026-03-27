@@ -26,9 +26,9 @@
             <input type="number" formControlName="montant" class="form-input" placeholder="Ex: 20000">
           </div>
           <div class="col-md-6 form-group">
-            <label>Durée du Remboursement (Mois)</label>
-            <input type="number" formControlName="duree" class="form-input" placeholder="Ex: 48">
-          </div>
+  <label>Durée du Remboursement (Années)</label>
+  <input type="number" formControlName="duree" class="form-input" placeholder="Ex: 5">
+</div>
           <div class="col-md-6 form-group mt-3">
             <label>Revenu Mensuel Net (TND)</label>
             <input type="number" formControlName="revenuMensuel" class="form-input">
@@ -52,6 +52,7 @@
             <select formControlName="typeEmploi" class="form-input">
               <option value="CDI">Contrat CDI</option>
               <option value="CDD">Contrat CDD</option>
+              <option value="CVP">Contrat CVP (Karama)</option>
               <option value="Freelance">Libéral / Freelance</option>
             </select>
           </div>
@@ -91,39 +92,44 @@
             <input type="number" formControlName="pensionAlimentaire" class="form-input">
           </div>
         </div>
+
         <div class="row mt-3">
           <div class="col-md-4 form-group">
             <label>Nombre d'enfants</label>
-            <input type="number" formControlName="nbEnfants" class="form-input">
+            <input type="number" formControlName="nbEnfants" class="form-input" (input)="onNbEnfantsChange()" placeholder="0">
           </div>
-          <div class="col-md-8 form-group" *ngIf="(creditForm.get('nbEnfants')?.value || 0) > 0">
-            <label>Âges des enfants (ex: 4, 10)</label>
-            <input type="text" formControlName="agesEnfants" class="form-input">
+          <div class="col-md-8" *ngIf="agesEnfants.length > 0">
+            <label>Âges des enfants</label>
+            <div class="row">
+              <div class="col-md-4 mb-2" *ngFor="let child of agesEnfants.controls; let i = index">
+                <input [formControl]="$any(child)" class="form-input" type="number" [placeholder]="'Âge enfant ' + (i + 1)">
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="footer-actions mt-5">
-  <a routerLink="/client" *ngIf="currentStep === 1">
-    <button type="button" class="btn-secondary">
-      <i class="fa-solid fa-house"></i> Retour à l'accueil
-    </button>
-  </a>
+        <div class="left-actions">
+          <a routerLink="/client" *ngIf="currentStep === 1">
+            <button type="button" class="btn-secondary">
+              <i class="fa-solid fa-house"></i> Retour à l'accueil
+            </button>
+          </a>
+          <button type="button" class="btn-secondary" (click)="prevStep()" *ngIf="currentStep > 1">
+            <i class="fa-solid fa-arrow-left"></i> Retour
+          </button>
+        </div>
 
-  <button type="button" class="btn-secondary" (click)="prevStep()" *ngIf="currentStep > 1">
-    <i class="fa-solid fa-arrow-left"></i> Retour
-  </button>
-
-  <div class="right-actions">
-    <button type="button" class="btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">
-      Continuer <i class="fa-solid fa-arrow-right"></i>
-    </button>
-
-    <button type="submit" class="btn-analyze" (click)="onSubmit()" *ngIf="currentStep === 3" [disabled]="creditForm.invalid">
-      Lancer l'Analyse IA <i class="fa-solid fa-microchip"></i>
-    </button>
-  </div>
-</div>
+        <div class="right-actions">
+          <button type="button" class="btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">
+            Continuer <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button type="submit" class="btn-analyze" (click)="onSubmit()" *ngIf="currentStep === 3" [disabled]="creditForm.invalid">
+            Lancer l'Analyse IA <i class="fa-solid fa-microchip"></i>
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </div>
