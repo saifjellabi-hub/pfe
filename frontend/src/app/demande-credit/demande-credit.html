@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <form [formGroup]="creditForm">
+    <form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
       <div *ngIf="currentStep === 1" class="step-content animate-in">
         <h4 class="section-title">Paramètres du Crédit & Revenus</h4>
         <div class="row">

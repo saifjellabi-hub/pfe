@@ -67,24 +67,29 @@ onSubmit() {
   if (this.creditForm.valid) {
     const data = this.creditForm.getRawValue();
     
-    // الحسبة متاع السنين اللي ركحناها
-    const dureeEnMois = Number(data.duree) * 12;
+    // 1. حساب المدة بالأشهر والـ DTI
+    const dureeEnMois = Number(data.duree) * 12; //
     const mensualite = (Number(data.montant) / dureeEnMois);
     const totalCharges = mensualite + Number(data.autresCredits) + Number(data.pensionAlimentaire);
     const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
 
+    // 2. تحويل agesEnfants من Array إلى String (باش الـ Java ما يرفضش الطلب)
+    // مثال: [5, 10] تولي "5,10"
+    const agesEnfantsString = data.agesEnfants ? data.agesEnfants.join(',') : '';
+
     const finalPayload = {
       ...data,
-      duree: dureeEnMois, // نبعثوها بالأشهر للـ DB والـ AI
+      agesEnfants: agesEnfantsString, // النص المحول
+      duree: dureeEnMois, 
       dtiRatio: dti,
-      status: 'En attente' // الحالة الأولية للطلب
+      status: 'En attente'
     };
 
-    // نبعثو للـ Backend (Spring Boot) وهو يتكفل بالباقي
+    console.log('Envoi du payload:', finalPayload); // ثبت في الـ Console لكان الـ agesEnfants ولات String
+
     this.creditService.createDemande(finalPayload).subscribe({
       next: (response) => {
         console.log('Demande envoyée avec succès. Analyse IA en cours...', response);
-        // نخزنو النتيجة في السيرفيس باش نظهروها في صفحة الـ Resultat
         this.creditService.setDemandeData(response);
         this.router.navigate(['/resultat-credit']);
       },
@@ -92,9 +97,15 @@ onSubmit() {
         console.error('Erreur lors de l\'envoi de la demande de crédit :', err);
       }
     });
-  }
-  else {
-    console.warn('Le formulaire est invalide. Veuillez vérifier les champs.');
+  } else {
+    // لو الفورم Invalide، نطبعو شكوني الخانة اللي معطلتنا
+    console.warn('Le formulaire est invalide. Vérification des erreurs :');
+    Object.keys(this.creditForm.controls).forEach(key => {
+      const controlErrors = this.creditForm.get(key)?.errors;
+      if (controlErrors != null) {
+        console.log('Champ avec erreur: ' + key, controlErrors);
+      }
+    });
   }
 }
 }
