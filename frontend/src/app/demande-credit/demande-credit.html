@@ -131,18 +131,35 @@
     <label class="upload-title">📑 Pièces Justificatives</label>
     <p class="upload-subtitle">Veuillez scanner et joindre votre Fiche de paie et CIN.</p>
 
-    <input type="file" id="fileUpload" (change)="onFileSelected($event)" hidden accept=".pdf,.jpg,.png">
-    
-    <label for="fileUpload" class="custom-file-upload">
-        <i class="fas fa-cloud-upload-alt"></i> 
-        {{ selectedFileName ? selectedFileName : 'Choisir un fichier' }}
-    </label>
+    <input type="file" id="fileUpload" (change)="onFileSelected($event)" hidden accept=".pdf,.jpg,.png" multiple>
 
-    <div *ngIf="selectedFileName" class="selected-badge">
-        <i class="fas fa-check-circle"></i> Fichier prêt à l'envoi
+<label for="fileUpload" class="custom-file-upload">
+    <i class="fas fa-cloud-upload-alt"></i> 
+    {{ selectedFilesList.length === 0 ? 'Choisir des fichiers' : selectedFilesList.length + ' fichiers sélectionnés' }}
+</label>
+
+<div *ngIf="selectedFilePreviews.length > 0" class="mt-4 preview-container p-3 border rounded bg-white">
+    <label class="font-weight-bold mb-3 text-secondary text-center d-block">Prévisualisation des documents</label>
+    
+    <div class="row justify-content-center">
+        <div *ngFor="let preview of selectedFilePreviews; let i = index" class="col-md-4 mb-3 text-center">
+            <div class="position-relative d-inline-block">
+                <img [src]="preview" class="img-thumbnail" style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
+                
+                <button type="button" class="btn btn-danger btn-sm position-absolute" 
+                        style="top: -5px; right: -5px; border-radius: 50%; padding: 2px 6px;"
+                        (click)="removeFile(i)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="small text-muted text-truncate mt-1" style="max-width: 120px; margin: 0 auto;">
+                {{ selectedFilesList[i] }}
+            </p>
+        </div>
     </div>
 </div>
-      </div>
+</div>
+</div>
 
       <div class="footer-actions mt-5">
         <div class="left-actions">

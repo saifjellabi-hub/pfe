@@ -13,9 +13,8 @@ import { CreditService } from '../services/credit.service';
 })
 export class DemandeCredit {
   currentStep = 1;
-  selectedFile: File | null = null;
-selectedFileName: string = '';
-
+selectedFilesList: string[] = [];
+selectedFilePreviews: any[] = [];
   creditForm = new FormGroup({
     // --- STEP 1: INFOS CRÉDIT & FINANCE ---
     montant: new FormControl('', [Validators.required, Validators.min(1000)]),
@@ -51,23 +50,29 @@ selectedFileName: string = '';
   }
 
   // الـ Function اللي تزيد وتنقص الخانات حسب عدد الصغار
-  onNbEnfantsChange() {
-    const nb = this.creditForm.get('nbEnfants')?.value || 0;
-    
-    // نمسحو الخانات القديمة ونزيدو جدد حسب الرقم اللي تحط
-    while (this.agesEnfants.length !== 0) {
-      this.agesEnfants.removeAt(0);
-    }
+ onNbEnfantsChange() {
+  const nb = this.creditForm.get('nbEnfants')?.value || 0;
+  const currentLen = this.agesEnfants.length;
 
-    for (let i = 0; i < nb; i++) {
+  if (nb > currentLen) {
+    for (let i = currentLen; i < nb; i++) {
       this.agesEnfants.push(new FormControl('', Validators.required));
     }
+  } else {
+    for (let i = currentLen; i > nb; i--) {
+      this.agesEnfants.removeAt(i - 1);
+    }
   }
+}
 
   nextStep() { if (this.currentStep < 3) this.currentStep++; }
   prevStep() { if (this.currentStep > 1) this.currentStep--; }
 
 onSubmit() {
+  // زيد السطر هذا في أول الـ onSubmit
+this.creditForm.patchValue({
+  justificatifUrl: this.selectedFilesList.join(', ')
+});
   if (this.creditForm.valid) {
     const data = this.creditForm.getRawValue();
     
@@ -112,14 +117,55 @@ onSubmit() {
     });
   }
 }
-onFileSelected(event: any) {
-  this.selectedFile = event.target.files[0];
-  if (this.selectedFile) {
-    this.selectedFileName = this.selectedFile.name;
-    // نزيدو اسم الملف للـ Form متاعنا
+async onFileSelected(event: any) {
+  const files = event.target.files;
+  if (files && files.length > 0) {
+    const filesArray = Array.from(files);
+
+    // 1. نستناو التصاور الكل يتقراو قبل ما نتعداو
+    for (const file of filesArray) {
+      if (!this.selectedFilesList.includes((file as File).name)) {
+        this.selectedFilesList.push((file as File).name);
+        
+        // قراءة التصويرة وتحويلها لـ Base64
+        const base64 = await this.readFileAsDataURL(file as File);
+        this.selectedFilePreviews.push(base64);
+      }
+    }
+
+    // 2. تحديث الـ UI مرة وحدة بعد ما كل شيء حضر
+    this.selectedFilePreviews = [...this.selectedFilePreviews];
     this.creditForm.patchValue({
-      justificatifUrl: this.selectedFileName
+      justificatifUrl: this.selectedFilesList.join(', ')
     });
+
+    // تصفير الـ Input
+    event.target.value = '';
   }
+}
+
+// Function مساعدة تقرا الملف وتستناه لين يكمل (Promise)
+readFileAsDataURL(file: File): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target?.result);
+    reader.onerror = (e) => reject(e);
+    reader.readAsDataURL(file);
+  });
+}
+removeFile(index: number) {
+  this.selectedFilesList.splice(index, 1);
+  this.selectedFilePreviews.splice(index, 1);
+  
+  // ⚠️ السطر هذا يخلي الـ Label يتصلح لحظياً
+  this.selectedFilesList = [...this.selectedFilesList];
+  this.selectedFilePreviews = [...this.selectedFilePreviews];
+
+  this.creditForm.patchValue({
+    justificatifUrl: this.selectedFilesList.join(', ')
+  });
+
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) fileInput.value = ''; 
 }
 }
