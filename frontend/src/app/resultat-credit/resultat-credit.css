@@ -1,98 +1,78 @@
-:host {
-  --bg-color: #0f111a;        
-  --text-color: #ffffff;      
-  --vermeg-red: #ED1B2F;      
-  --card-bg: #1e1f2a;
-  --border-color: #3e4451;
-  --success-green: #28a745;
-  display: block;
-  min-height: 100vh;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+.result-container { padding: 30px; background: #0f111a; min-height: 100vh; }
+.info-card { background: #1e1f2a; border-radius: 15px; padding: 20px; color: white; margin-bottom: 20px; border-left: 4px solid #e74c3c; }
+.highlight-border { border-left-color: #3498db; }
+.card-title { color: #e74c3c; font-weight: bold; margin-bottom: 20px; font-size: 1.2rem; }
+.info-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
+.info-item span { color: #aaa; }
+.info-box { background: #2a2a2a; padding: 15px; border-radius: 10px; text-align: center; }
+.info-box label { display: block; color: #888; font-size: 0.8rem; margin-bottom: 5px; }
+.info-box p { font-size: 1.2rem; font-weight: bold; margin: 0; }
+.status-badge.warning { background: #f39c12; color: #fff; padding: 8px 20px; border-radius: 50px; display: inline-block; font-weight: bold; animation: pulse 2s infinite; }
+.alert-message { background: rgba(52, 152, 219, 0.1); color: #3498db; padding: 15px; border-radius: 10px; border: 1px solid #3498db; }
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+.file-preview-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
-.admin-main {
-  padding: 50px 20px;
-  display: flex;
-  justify-content: center;
+.file-preview-card:hover {
+    transform: scale(1.05); /* تكبر شوية كي تحط عليها الـ Souris */
 }
 
-.white-card {
-  background-color: var(--card-bg);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  border: 1px solid var(--border-color);
-  max-width: 600px;
-  width: 100%;
-  text-align: center;
+.file-preview-card img {
+    height: 120px; /* طول موحد للتصاور */
+    width: 100%;
+    object-fit: cover; /* باش التصويرة ما تتجبدش */
+    border: 1px solid #444;
 }
 
-/* Le cercle de score */
-.score-circle {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 8px solid var(--border-color);
-  border-top-color: var(--success-green); /* On pourra changer dynamiquement en rouge si besoin */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 30px;
-  background: rgba(40, 167, 69, 0.05);
-  transition: transform 0.3s ease;
+.dot.green { background-color: #2ecc71; }
+/* تنسيق الـ Header باش يولي Flexbox */
+.header-status {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 15px; /* مسافة بين العناصر */
 }
 
-.score-circle:hover {
-  transform: scale(1.05);
+/* تحسين شكل زر الرجوع */
+.header-status .btn-outline-light {
+    text-decoration: none;
+    background: transparent;
+    border: 1.5px solid #2d3142;
+    color: #aaa;
+    padding: 12px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
-.score-value {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--success-green);
-  line-height: 1;
+.header-status .btn-outline-light:hover {
+ text-decoration: none;
+    border-color: #ff0000;
+    color: #ff0000;
+     padding: 12px 35px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
 }
 
-.score-label {
-  font-size: 0.9rem;
-  text-transform: uppercase;
+/* باش نضمنوا العنوان ديما في الوسط حتى لو الـ Button طويل */
+.header-status h2 {
+  font-size: 1.5rem;
   letter-spacing: 1px;
-  opacity: 0.7;
-}
-
-/* Alerte de décision */
-.decision-box {
-  background-color: rgba(40, 167, 69, 0.1);
-  border-left: 5px solid var(--success-green);
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px;
-}
-
-.decision-box h3 {
-  color: var(--success-green);
-  margin-bottom: 10px;
-}
-
-/* Bouton Retour */
-.admin-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background-color: transparent;
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  padding: 12px 25px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.admin-button:hover {
-  background-color: white;
-  color: #0f111a;
-  border-color: white;
 }

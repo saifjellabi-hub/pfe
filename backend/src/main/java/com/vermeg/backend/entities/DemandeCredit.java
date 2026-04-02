@@ -1,4 +1,5 @@
 package com.vermeg.backend.entities;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,10 +14,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DemandeCredit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "client_ncin", nullable = false)
+    private String ncin;
     @Column(name = "montantCredit")
     private Double montant;
     @Column(name = "DuréeRemboursement")
@@ -38,8 +42,8 @@ public class DemandeCredit {
     private Integer nbEnfants;
     private String agesEnfants; // تُخزن كـ String (مثلاً "5,10")
     @Column(name = "Lien_Justificatif")
-private String justificatifUrl; // يخزن مسار الملف في الـ Server
-
+private String justificatifUrl; 
+private Double tauxInteret;
     private Double dtiRatio;
     private String decisionIA; // Accepté / Refusé
     private Double scoreIA;   // النسبة اللي رجعها الـ AI

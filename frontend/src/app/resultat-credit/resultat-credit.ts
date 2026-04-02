@@ -1,30 +1,52 @@
-import { Component , OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { CreditService } from '../services/credit';
-
+import { CreditService } from '../services/credit.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { RouterModule } from '@angular/router'; // زدنا هذي باش الـ routerLink يخدم
 
 @Component({
   selector: 'app-resultat-credit',
   standalone: true,
+  imports: [CommonModule, RouterModule], // أهوكا زدتلك الـ RouterModule هوني
   templateUrl: './resultat-credit.html',
-  styleUrl: './resultat-credit.css',
-  imports : [CommonModule,RouterModule]
+  styleUrls: ['./resultat-credit.css']
 })
-
 export class ResultatCredit implements OnInit {
-  score: number = 85; 
-  decision: string = 'Accordé';
-  
-  constructor(private creditService: CreditService) {}
-  
+  selectedFilePreviews: string[] = [];
+  demande: any = null; 
+  currentUser: any;
+  isLoading: boolean = true; 
+  getFileArray(justificatifUrl: string): string[] {
+  if (!justificatifUrl) return [];
+  // تقسيم النص بـ الفاصلة وتنظيف الفراغات
+  return justificatifUrl.split(',').map(f => f.trim());
+}
+
+  constructor(private creditService: CreditService, private cdr: ChangeDetectorRef) {}
+
   ngOnInit() {
-    this.score = this.creditService.getScore();
-    if (this.score >= 50) {
-      this.decision = 'Accordé';
-    } else {
-      this.decision = 'Refusé';
+    const userData = localStorage.getItem('currentUser');
+    if (userData) {
+      this.currentUser = JSON.parse(userData);
+      
+      this.isLoading = true; // 2. يبدأ الـ Loading توة
+
+      this.creditService.getDemandesByClient(this.currentUser.ncin).subscribe({
+        next: (data) => {
+          this.demande = data; 
+          this.isLoading = false; 
+          
+          if (this.demande) {
+            this.selectedFilePreviews = this.demande.previews || [];
+          }
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error("Erreur:", err);
+          this.isLoading = false; // 4. حتى كان فما Error، نوقفو الـ Loading باش تظهر الـ Empty State
+          this.cdr.detectChanges();
+        }
+      });
     }
   }
-
 }

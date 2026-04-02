@@ -1,29 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreditService {
-    private apiUrl = 'http://localhost:8080/api/demandes';
-  // هوني نخزنو البيانات باش نجمو نقراوهم في صفحة الـ Resultat
-  private demandeData: any;
+  private apiUrl = 'http://localhost:8080/api/demandes';
 
   constructor(private http: HttpClient) { }
 
-  createDemande(data: any) {
-    // تبعث الطلب للـ Spring Boot اللي هو بدورو باش يكلم الـ Flask
-    return this.http.post(this.apiUrl, data);
-  }
+createDemande(formData: FormData): Observable<any> {
+  // هوني نبعثو الـ formData كاملة (فيها الـ JSON والـ Files)
+  return this.http.post(`${this.apiUrl}`, formData);
+}
 
-  // هذه الـ Method اللي كانت ناقصة عندك
-  setDemandeData(data: any) {
-    this.demandeData = data;
-    console.log('Data saved in service:', this.demandeData);
-  }
+  // 2. تجيب كل الطلبات الخاصة بحريف معين من الـ Database باستعمال الـ NCIN
+  // الـ Backend لازم يكون فيه Endpoint: /api/demandes/client/{ncin}
+ getDemandesByClient(ncin: string): Observable<any> {
+  return this.http.get(`http://localhost:8080/api/demandes/client/${ncin}`);
+}
 
-  // الـ Method هذه تستحقها في صفحة الـ Resultat باش تجبد الـ Data
-  getDemandeData() {
-    return this.demandeData;
+  // 3. دالة اختيارية إذا حبيت تجيب طلب واحد بالـ ID متاعو
+  getDemandeById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

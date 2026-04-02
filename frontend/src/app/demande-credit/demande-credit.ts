@@ -15,6 +15,7 @@ export class DemandeCredit {
   currentStep = 1;
 selectedFilesList: string[] = [];
 selectedFilePreviews: any[] = [];
+selectedFilesActual: File[] = [];
   creditForm = new FormGroup({
     // --- STEP 1: INFOS CRÉDIT & FINANCE ---
     montant: new FormControl('', [Validators.required, Validators.min(1000)]),
@@ -28,7 +29,7 @@ selectedFilePreviews: any[] = [];
     typeEmploi: new FormControl('CDI', [Validators.required]),
     professionDetail: new FormControl('', [Validators.required]),
     anciennete: new FormControl('', [Validators.required, Validators.min(0)]),
-    secteurActivite: new FormControl('public', [Validators.required]),
+    secteurActivite: new FormControl('Secteur Étatique', [Validators.required]),
 
     // --- STEP 3: SITUATION PERSONNELLE ---
     age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(65)]),
@@ -69,45 +70,67 @@ selectedFilePreviews: any[] = [];
   prevStep() { if (this.currentStep > 1) this.currentStep--; }
 
 onSubmit() {
-  // زيد السطر هذا في أول الـ onSubmit
-this.creditForm.patchValue({
-  justificatifUrl: this.selectedFilesList.join(', ')
-});
+  // 2. نجيبو الـ NCIN متاع الحريف اللي عامل Login
+  const userData = localStorage.getItem('currentUser');
+  if (!userData) {
+    alert("Session expirée. Veuillez vous reconnecter.");
+    this.router.navigate(['/login']);
+    return;
+  }
+  const currentUserNcin = JSON.parse(userData).ncin;
+
   if (this.creditForm.valid) {
     const data = this.creditForm.getRawValue();
     
-    // 1. حساب المدة بالأشهر والـ DTI
-    const dureeEnMois = Number(data.duree) * 12; //
+    // 3. الحسابات (المدة والـ DTI)
+    const dureeEnMois = Number(data.duree) * 12;
     const mensualite = (Number(data.montant) / dureeEnMois);
-    const totalCharges = mensualite + Number(data.autresCredits) + Number(data.pensionAlimentaire);
+    const totalCharges = mensualite + Number(data.autresCredits) + (Number(data.pensionAlimentaire) || 0);
     const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
-
-    // 2. تحويل agesEnfants من Array إلى String (باش الـ Java ما يرفضش الطلب)
-    // مثال: [5, 10] تولي "5,10"
     const agesEnfantsString = data.agesEnfants ? data.agesEnfants.join(',') : '';
 
+    // 5. الـ Payload النهائي (البيانات اللي ماشية للـ Database)
     const finalPayload = {
       ...data,
-      agesEnfants: agesEnfantsString, // النص المحول
+      ncin: currentUserNcin,  
+      agesEnfants: agesEnfantsString,
       duree: dureeEnMois, 
       dtiRatio: dti,
       status: 'En attente'
     };
+ const formData = new FormData();
+ formData.append('demande', new Blob([JSON.stringify(finalPayload)], {
+      type: 'application/json'
+    }));
 
-    console.log('Envoi du payload:', finalPayload); // ثبت في الـ Console لكان الـ agesEnfants ولات String
+    // نزيدو ملفات الـ PDF الحقيقية
+    this.selectedFilesActual.forEach((file) => {
+      formData.append('files', file); 
+    });
 
-    this.creditService.createDemande(finalPayload).subscribe({
+    // 6. بعث البيانات للـ Spring Boot
+    this.creditService.createDemande(formData).subscribe({
       next: (response) => {
-        console.log('Demande envoyée avec succès. Analyse IA en cours...', response);
-        this.creditService.setDemandeData(response);
+        console.log('Demande enregistrée avec succès !', response);
         this.router.navigate(['/resultat-credit']);
       },
       error: (err) => {
-        console.error('Erreur lors de l\'envoi de la demande de crédit :', err);
-      }
+        console.error('Erreur Backend:', err);
+       if (err.status === 400 || err.status === 500) {
+      
+      const errorMsg = typeof err.error === 'string' ? err.error : (err.error?.message || "Une demande existe déjà.");
+      
+      alert("⚠️ " + errorMsg); 
+      
+      
+      this.router.navigate(['/resultat-credit']);
+    } else {
+      alert("Une erreur technique est survenue.");
+    }
+  }
     });
   } else {
-    // لو الفورم Invalide، نطبعو شكوني الخانة اللي معطلتنا
+    // لو الفورم ناقص، نخرجوا الأخطاء في الـ Console باش نعرفوا وين المشكلة
     console.warn('Le formulaire est invalide. Vérification des erreurs :');
     Object.keys(this.creditForm.controls).forEach(key => {
       const controlErrors = this.creditForm.get(key)?.errors;
@@ -115,32 +138,33 @@ this.creditForm.patchValue({
         console.log('Champ avec erreur: ' + key, controlErrors);
       }
     });
+    alert("Veuillez remplir tous les champs obligatoires correctement.");
   }
 }
 async onFileSelected(event: any) {
   const files = event.target.files;
   if (files && files.length > 0) {
-    const filesArray = Array.from(files);
+    const filesArray = Array.from(files) as File[];
 
-    // 1. نستناو التصاور الكل يتقراو قبل ما نتعداو
     for (const file of filesArray) {
-      if (!this.selectedFilesList.includes((file as File).name)) {
-        this.selectedFilesList.push((file as File).name);
+      if (file.type !== 'application/pdf') {
+        alert(`Le fichier "${file.name}" n'est pas un PDF. Veuillez choisir uniquement des fichiers PDF.`);
+        continue;
+      }
+
+      if (!this.selectedFilesList.includes(file.name)) {
+        this.selectedFilesList.push(file.name);
+        this.selectedFilesActual.push(file); 
         
-        // قراءة التصويرة وتحويلها لـ Base64
-        const base64 = await this.readFileAsDataURL(file as File);
-        this.selectedFilePreviews.push(base64);
+        this.selectedFilePreviews.push('pdf-icon'); 
       }
     }
-
-    // 2. تحديث الـ UI مرة وحدة بعد ما كل شيء حضر
-    this.selectedFilePreviews = [...this.selectedFilePreviews];
+    this.selectedFilesList = [...this.selectedFilesList];
     this.creditForm.patchValue({
       justificatifUrl: this.selectedFilesList.join(', ')
     });
 
-    // تصفير الـ Input
-    event.target.value = '';
+    event.target.value = ''; 
   }
 }
 
@@ -160,7 +184,7 @@ removeFile(index: number) {
   // ⚠️ السطر هذا يخلي الـ Label يتصلح لحظياً
   this.selectedFilesList = [...this.selectedFilesList];
   this.selectedFilePreviews = [...this.selectedFilePreviews];
-
+ this.selectedFilesActual.splice(index, 1);
   this.creditForm.patchValue({
     justificatifUrl: this.selectedFilesList.join(', ')
   });

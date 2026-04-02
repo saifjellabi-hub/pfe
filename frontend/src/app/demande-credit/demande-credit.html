@@ -36,6 +36,7 @@
     <option value="Achat Véhicule">Achat Véhicule</option>
     <option value="consommation">Consommation / Mariage</option>
     <option value="travaux">Rénovation / Travaux</option>
+    <option value="autre">Autre</option>
   </select>
 </div>
           <div class="col-md-6 form-group mt-3">
@@ -73,7 +74,7 @@
               <option value="CDI">Contrat CDI</option>
               <option value="CDD">Contrat CDD</option>
               <option value="CVP">Contrat CVP (Karama)</option>
-              <option value="Freelance">Libéral / Freelance</option>
+              <option value="Libéral / Freelance">Libéral / Freelance</option>
             </select>
           </div>
           <div class="col-md-6 form-group mt-3">
@@ -83,10 +84,10 @@
           <div class="col-md-6 form-group mt-3">
             <label>Secteur d'Activité</label>
             <select formControlName="secteurActivite" class="form-input">
-              <option value="public">Secteur Étatique</option>
-              <option value="tech">Technologie / IT</option>
-              <option value="sante">Santé</option>
-              <option value="tourisme">Tourisme</option>
+              <option value="Secteur Étatique">Secteur Étatique</option>
+              <option value="Technologie / IT">Technologie / IT</option>
+              <option value="Santé">Santé</option>
+              <option value="Tourisme">Tourisme</option>
             </select>
           </div>
         </div>
@@ -127,37 +128,41 @@
             </div>
           </div>
         </div>
-       <div class="upload-container mt-4">
-    <label class="upload-title">📑 Pièces Justificatives</label>
-    <p class="upload-subtitle">Veuillez scanner et joindre votre Fiche de paie et CIN.</p>
+      <div class="upload-container mt-4">
+    <label class="upload-title">📑 Pièces Justificatives (PDF uniquement)</label>
+    <p class="upload-subtitle">Veuillez scanner et joindre votre Fiche de paie et CIN en format PDF.</p>
 
-    <input type="file" id="fileUpload" (change)="onFileSelected($event)" hidden accept=".pdf,.jpg,.png" multiple>
+    <input type="file" id="fileUpload" (change)="onFileSelected($event)" hidden accept="application/pdf" multiple>
 
-<label for="fileUpload" class="custom-file-upload">
-    <i class="fas fa-cloud-upload-alt"></i> 
-    {{ selectedFilesList.length === 0 ? 'Choisir des fichiers' : selectedFilesList.length + ' fichiers sélectionnés' }}
-</label>
+    <label for="fileUpload" class="custom-file-upload">
+        <i class="fas fa-file-pdf"></i> 
+        {{ selectedFilesList.length === 0 ? 'Choisir des fichiers PDF' : selectedFilesList.length + ' fichiers PDF sélectionnés' }}
+    </label>
 
-<div *ngIf="selectedFilePreviews.length > 0" class="mt-4 preview-container p-3 border rounded bg-white">
-    <label class="font-weight-bold mb-3 text-secondary text-center d-block">Prévisualisation des documents</label>
-    
-    <div class="row justify-content-center">
-        <div *ngFor="let preview of selectedFilePreviews; let i = index" class="col-md-4 mb-3 text-center">
-            <div class="position-relative d-inline-block">
-                <img [src]="preview" class="img-thumbnail" style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
-                
-                <button type="button" class="btn btn-danger btn-sm position-absolute" 
-                        style="top: -5px; right: -5px; border-radius: 50%; padding: 2px 6px;"
-                        (click)="removeFile(i)">
-                    <i class="fas fa-times"></i>
-                </button>
+    <div *ngIf="selectedFilesList.length > 0" class="mt-4 preview-container p-3 border rounded bg-white">
+        <label class="font-weight-bold mb-3 text-secondary text-center d-block">Documents PDF sélectionnés</label>
+        
+        <div class="row justify-content-center">
+            <div *ngFor="let fileName of selectedFilesList; let i = index" class="col-md-4 mb-3 text-center">
+                <div class="position-relative d-inline-block">
+                    
+                    <div class="pdf-preview-icon d-flex align-items-center justify-content-center border rounded shadow-sm"
+                         style="width: 120px; height: 120px; background: #fff5f5; border: 1px solid #ffc1c1 !important;">
+                        <i class="fas fa-file-pdf text-danger" style="font-size: 50px;"></i>
+                    </div>
+                    
+                    <button type="button" class="btn btn-danger btn-sm position-absolute" 
+                            style="top: -8px; right: -8px; border-radius: 50%; width: 25px; height: 25px; padding: 0;"
+                            (click)="removeFile(i)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="small text-muted text-truncate mt-2 px-2" style="max-width: 130px; margin: 0 auto; font-weight: 500;">
+                    {{ fileName }}
+                </p>
             </div>
-            <p class="small text-muted text-truncate mt-1" style="max-width: 120px; margin: 0 auto;">
-                {{ selectedFilesList[i] }}
-            </p>
         </div>
     </div>
-</div>
 </div>
 </div>
 
