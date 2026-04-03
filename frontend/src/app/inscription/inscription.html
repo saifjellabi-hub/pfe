@@ -1,3 +1,13 @@
+<header class="top-nav">
+  <div class="admin-corner">
+    <nav>
+      <a class="admin-button">
+        <span class="dot"></span>
+        <span class="admin-text"(click)="goToLogin()" >Retour</span>
+      </a>
+    </nav>
+  </div>
+</header>
 <div class="login-container">
   <div class="header-logo">
     <img src="assets/vermeg.png" alt="Vermeg Logo" class="vermeg-logo">
@@ -45,16 +55,21 @@
       </div>
 </div>
     
-      <div class="input-group">
-        <div class="input-field">
-          <label>Âge</label>
-          <input type="number" formControlName="age" placeholder="Min 18ans">
-        </div>
+   <div class="input-group">
+  <div class="input-field">
+    <label>Date de Naissance</label>
+    <input type="date" formControlName="dateNaissance" (change)="onDateChange($event)">
+  </div>
+  <div class="input-field">
+    <label>Âge (Calculé)</label>
+    <input type="number" formControlName="age" readonly style="background: #222; cursor: not-allowed;">
+  </div>
+</div>
         <div class="input-field">
           <label>Téléphone</label>
           <input type="text" formControlName="phone" placeholder="+216...">
         </div>
-      </div>
+      
       <div class="input-field full-width">
   <label>Montant du dépôt initial (TND)</label>
   <input type="number" formControlName="soldeInitial" placeholder="Minimum 50 TND">
@@ -105,13 +120,13 @@
     Les mots de passe ne correspondent pas
   </span>
 </div>
-
-      <button type="submit" class="btn-login" [disabled]="registerForm.invalid">
-        Créer le compte
+<div class="actions-row" style="display: flex; gap: 380px;">
+      <button type="submit" class="btn-login" style="flex: 1;" [disabled]="registerForm.invalid">
+        Ajouter
       </button>
-
-      <div class="divider"></div>
-      <p class="forgot-link" (click)="goToLogin()">Retour</p>
+      <button type="reset" class="btn-login" style="flex: 1;">Annuler</button>
+      
+</div>
 
     </form>
   </div>

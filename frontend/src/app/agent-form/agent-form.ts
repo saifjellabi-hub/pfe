@@ -74,4 +74,7 @@ toggleTheme() {
     });
   }
 }
+goToLogin() {
+    this.router.navigate(['/admin']);
+  }
 }

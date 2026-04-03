@@ -180,9 +180,7 @@ if (this.loginForm.invalid) {
     }
   });
 }
-  goToRegister() {
-    this.router.navigate(['/inscription']);
-  }
+
 
   resetPassword() {
   if (this.newPassword !== this.confirmPassword) {

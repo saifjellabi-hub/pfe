@@ -12,7 +12,41 @@
   --text-color: #0f111a;
   --border-color: #dcdde1;
 }
+.admin-corner {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1100;
+}
+.admin-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  color: var(--text-color); /* Automatically shifts with theme */
 
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-button:hover {
+  border-color: var(--vermeg-red);
+  color: var(--vermeg-red);
+  border-color: var(--vermeg-red);
+  transform: translateY(-2px);
+}
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: var(--vermeg-red);
+  border-radius: 50%;
+}
 .agent-container {
   min-height: 100vh;
   display: flex;
