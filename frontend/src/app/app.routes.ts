@@ -10,6 +10,8 @@ import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
 import { AgentFormComponent } from './agent-form/agent-form';
 import { AgentLoginComponent } from './agent-login/agent-login';
 import { SimulationCredit } from './simulation-credit/simulation-credit';
+import { AgentDashboardComponent } from './agent-dashboard/agent-dashboard';
+
 export const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
@@ -24,5 +26,6 @@ export const routes: Routes = [
   { path: 'agent-form', component: AgentFormComponent},
   { path: 'simulation-credit', component: SimulationCredit },
   { path: '**', redirectTo: 'welcome' },
+  { path: 'agent-dashboard', component: AgentDashboardComponent },
 
 ];

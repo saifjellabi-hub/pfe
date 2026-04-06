@@ -2,7 +2,9 @@ package com.vermeg.backend.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vermeg.backend.entities.Agent;
 import com.vermeg.backend.repositories.AgentRepository; 
+
 
 @RestController
 @RequestMapping("/api/agents")
@@ -40,18 +43,24 @@ public List<Agent> getAllAgents() {
 }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginAgent(@RequestBody Map<String, String> payload) {
-        String cin = payload.get("cin");
-        String password = payload.get("password");
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        String matricule = credentials.get("matricule");
+        String password = credentials.get("password");
 
-        return agentRepository.findByCin(cin)
-            .map(agent -> {
-                if (agent.getPassword().equals(password)) {
-                    return ResponseEntity.ok(agent);
-                }
-                return ResponseEntity.status(401).body("Mot de passe incorrect");
-            })
-            .orElse(ResponseEntity.status(404).body("Agent non trouvé"));
+        // On cherche l'agent par son matricule unique
+        Optional<Agent> agentOpt = agentRepository.findByMatricule(matricule);
+
+        if (agentOpt.isPresent()) {
+            Agent agent = agentOpt.get();
+            // On vérifie si le mot de passe correspond
+            if (agent.getPassword().equals(password)) {
+                return ResponseEntity.ok(agent); // Succès : on renvoie l'objet Agent complet
+            }
+        }
+
+        // Si rien ne correspond, on renvoie une erreur 401
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body("Matricule ou mot de passe incorrect");
     }
 
 
@@ -77,3 +86,4 @@ public ResponseEntity<?> updateAgent(@PathVariable Long id, @RequestBody Agent a
     }).orElse(ResponseEntity.notFound().build());
 }
 }
+

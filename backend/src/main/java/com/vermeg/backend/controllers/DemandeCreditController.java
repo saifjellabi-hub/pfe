@@ -3,27 +3,23 @@ package com.vermeg.backend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType; // مهم جداً
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vermeg.backend.entities.DemandeCredit;
 import com.vermeg.backend.repositories.DemandeCreditRepository;
 import com.vermeg.backend.services.DemandeCreditService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/demandes")
+@RequestMapping("/api/credits")
 @CrossOrigin(origins = "http://localhost:4200")
 public class DemandeCreditController {
 
     @Autowired
-    private DemandeCreditRepository repository;
+    private DemandeCreditRepository demandeCreditRepository; // Le nom doit être identique partout
 
     @Autowired
     private DemandeCreditService demandeService; // تأكد من الاسم هوني

@@ -32,4 +32,11 @@ updateAgent(id: number, agent: any): Observable<any> {
 login(credentials: any): Observable<any> {
   return this.http.post('http://localhost:8080/api/agents/login', credentials);
 }
+getDemandes(): Observable<any[]> {
+  return this.http.get<any[]>('http://localhost:8080/api/credits/all');
+}
+
+modifierStatut(id: number, statut: string): Observable<any> {
+  return this.http.put(`http://localhost:8080/api/credits/update-statut/${id}`, statut);
+}
 }

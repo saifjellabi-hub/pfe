@@ -47,5 +47,5 @@ private Double tauxInteret;
     private Double dtiRatio;
     private String decisionIA; // Accepté / Refusé
     private Double scoreIA;   // النسبة اللي رجعها الـ AI
-    private String status;    // "En attente"
+    private String statut= "EN_ATTENTE";
 }

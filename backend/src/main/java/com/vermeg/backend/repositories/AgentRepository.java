@@ -9,4 +9,5 @@ import com.vermeg.backend.entities.Agent;
 public interface AgentRepository extends JpaRepository<Agent, Long> {
     Optional<Agent> findByCin(String cin);
     Optional<Agent> findByEmail(String email);
+    Optional<Agent> findByMatricule(String matricule);
 }

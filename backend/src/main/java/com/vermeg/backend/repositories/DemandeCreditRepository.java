@@ -9,5 +9,6 @@ import com.vermeg.backend.entities.DemandeCredit;
 
 @Repository
 public interface DemandeCreditRepository extends JpaRepository<DemandeCredit, Long> {
-    Optional<DemandeCredit> findByNcin(String ncin);
+
+List<DemandeCredit> findByNomClient(String nomClient);
 }
