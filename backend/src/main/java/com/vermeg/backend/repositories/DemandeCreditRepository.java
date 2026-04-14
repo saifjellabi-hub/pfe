@@ -1,14 +1,12 @@
 package com.vermeg.backend.repositories;
 
-import java.util.Optional;
-
+import com.vermeg.backend.entities.DemandeCredit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.vermeg.backend.entities.DemandeCredit;
+import java.util.List;
 
 @Repository
 public interface DemandeCreditRepository extends JpaRepository<DemandeCredit, Long> {
-
-List<DemandeCredit> findByNomClient(String nomClient);
+    List<DemandeCredit> findByNcin(String ncin);
+    // Ne rien ajouter ici pour l'instant
 }

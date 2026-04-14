@@ -19,24 +19,27 @@ selectedFilesActual: File[] = [];
   creditForm = new FormGroup({
     // --- STEP 1: INFOS CRÉDIT & FINANCE ---
     montant: new FormControl('', [Validators.required, Validators.min(1000)]),
-   duree: new FormControl('', [Validators.required, Validators.min(1), Validators.max(25)]),
+    duree: new FormControl('', [Validators.required, Validators.min(1), Validators.max(25)]),
     revenuMensuel: new FormControl('', [Validators.required, Validators.min(500)]),
     autresCredits: new FormControl(0, [Validators.min(0)]),
     garantie: new FormControl('Cession sur salaire', [Validators.required]),
     tauxInteret: new FormControl(8.5, [Validators.required]),
 
-    // --- STEP 2: PROFIL PROFESSIONNEL ---
+    // --- STEP 2: PROFIL PROFESSIONNEL (MODIFIÉ) ---
+    nomEntreprise: new FormControl('', [Validators.required]), // Nouveau
+    telephoneEmployeur: new FormControl('', [Validators.pattern('^[0-9]{8}$')]), // Nouveau (8 chiffres Tunisie)
+    dateEmbauche: new FormControl('', [Validators.required]), // Nouveau
     typeEmploi: new FormControl('CDI', [Validators.required]),
     professionDetail: new FormControl('', [Validators.required]),
     anciennete: new FormControl('', [Validators.required, Validators.min(0)]),
-    secteurActivite: new FormControl('Secteur Étatique', [Validators.required]),
+    secteurActivite: new FormControl('Technologie / IT', [Validators.required]),
 
     // --- STEP 3: SITUATION PERSONNELLE ---
     age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(65)]),
     situationFamiliale: new FormControl('celibataire', [Validators.required]),
     pensionAlimentaire: new FormControl(0),
     nbEnfants: new FormControl(0, [Validators.min(0)]),
-    agesEnfants: new FormArray([]), // بدلناها لـ FormArray باش تهز بزاف خانات
+    agesEnfants: new FormArray([]),
     objetCredit: new FormControl('immobilier', [Validators.required]),
     justificatifUrl: new FormControl('')
   });

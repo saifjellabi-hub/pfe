@@ -42,7 +42,7 @@ public class DemandeCreditController {
     }
 
     @GetMapping("/client/{ncin}")
-    public DemandeCredit getDemandeByClient(@PathVariable String ncin) {
-        return repository.findByNcin(ncin).orElse(null);
+    public List<DemandeCredit> getDemandeByClient(@PathVariable String ncin) {
+        return demandeCreditRepository.findByNcin(ncin);
     }
 }

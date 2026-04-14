@@ -62,33 +62,54 @@
       </div>
 
       <div *ngIf="currentStep === 2" class="step-content animate-in">
-        <h4 class="section-title">Stabilité & Emploi</h4>
+        <h4 class="section-title">Informations Employeur & Stabilité</h4>
         <div class="row">
+          <div class="col-md-12 form-group mb-3">
+            <label>Nom de l'Entreprise / Employeur</label>
+            <input type="text" formControlName="nomEntreprise" class="form-input" placeholder="Ex: Vermeg, Tunisie Telecom...">
+          </div>
+
           <div class="col-md-6 form-group">
             <label>Poste / Profession</label>
-            <input type="text" formControlName="professionDetail" class="form-input" placeholder="Ex: Ingénieur">
+            <input type="text" formControlName="professionDetail" class="form-input" placeholder="Ex: Développeur Fullstack">
           </div>
+
           <div class="col-md-6 form-group">
-            <label>Type de Contrat</label>
-            <select formControlName="typeEmploi" class="form-input">
-              <option value="CDI">Contrat CDI</option>
-              <option value="CDD">Contrat CDD</option>
-              <option value="CVP">Contrat CVP (Karama)</option>
-              <option value="Libéral / Freelance">Libéral / Freelance</option>
-            </select>
-          </div>
-          <div class="col-md-6 form-group mt-3">
-            <label>Ancienneté (Années)</label>
-            <input type="number" formControlName="anciennete" class="form-input">
-          </div>
-          <div class="col-md-6 form-group mt-3">
             <label>Secteur d'Activité</label>
             <select formControlName="secteurActivite" class="form-input">
-              <option value="Secteur Étatique">Secteur Étatique</option>
               <option value="Technologie / IT">Technologie / IT</option>
-              <option value="Santé">Santé</option>
-              <option value="Tourisme">Tourisme</option>
+              <option value="Secteur Étatique">Secteur Étatique / Fonctionnaire</option>
+              <option value="Santé">Santé / Médical</option>
+              <option value="Banque / Assurance">Banque / Assurance</option>
+              <option value="Industrie">Industrie / Manufacture</option>
+              <option value="Tourisme">Tourisme / Transport</option>
+              <option value="Autre">Autre</option>
             </select>
+          </div>
+
+          <div class="col-md-6 form-group mt-3">
+            <label>Type de Contrat</label>
+            <select formControlName="typeEmploi" class="form-input">
+              <option value="CDI">Titulaire / CDI</option>
+              <option value="CDD">Contractuel / CDD</option>
+              <option value="CVP">Contrat CVP (Karama)</option>
+              <option value="Freelance">Libéral / Freelance</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 form-group mt-3">
+            <label>Date d'Embauche</label>
+            <input type="date" formControlName="dateEmbauche" class="form-input">
+          </div>
+
+          <div class="col-md-6 form-group mt-3">
+            <label>Ancienneté (Années cumulées)</label>
+            <input type="number" formControlName="anciennete" class="form-input" placeholder="Ex: 3">
+          </div>
+
+          <div class="col-md-6 form-group mt-3">
+            <label>Téléphone RH / Employeur (Optionnel)</label>
+            <input type="text" formControlName="telephoneEmployeur" class="form-input" placeholder="Ex: 71123456">
           </div>
         </div>
       </div>
