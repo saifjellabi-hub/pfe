@@ -29,6 +29,8 @@ public class DemandeCredit {
     
     private String garantie;
     private Double pensionAlimentaire;
+    private Double chargesFixes; // Loyer, assurances, factures, etc.
+    private String descriptionCharges; // Détails : Loyer, électricité, etc.
 
     // --- NOUVEAUX CHAMPS ENTREPRISE ---
     private String nomEntreprise;

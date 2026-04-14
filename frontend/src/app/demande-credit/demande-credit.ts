@@ -24,6 +24,8 @@ selectedFilesActual: File[] = [];
     autresCredits: new FormControl(0, [Validators.min(0)]),
     garantie: new FormControl('Cession sur salaire', [Validators.required]),
     tauxInteret: new FormControl(8.5, [Validators.required]),
+    chargesFixes: new FormControl(0, [Validators.min(0)]),
+    descriptionCharges: new FormControl(''),
 
     // --- STEP 2: PROFIL PROFESSIONNEL (MODIFIÉ) ---
     nomEntreprise: new FormControl('', [Validators.required]), // Nouveau
@@ -88,7 +90,10 @@ onSubmit() {
     // 3. الحسابات (المدة والـ DTI)
     const dureeEnMois = Number(data.duree) * 12;
     const mensualite = (Number(data.montant) / dureeEnMois);
-    const totalCharges = mensualite + Number(data.autresCredits) + (Number(data.pensionAlimentaire) || 0);
+    const totalCharges = mensualite + 
+    Number(data.autresCredits) + 
+    (Number(data.pensionAlimentaire) || 0) + 
+    (Number(data.chargesFixes) || 0);
     const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
     const agesEnfantsString = data.agesEnfants ? data.agesEnfants.join(',') : '';
 

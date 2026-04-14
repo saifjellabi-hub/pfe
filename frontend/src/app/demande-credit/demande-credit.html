@@ -39,14 +39,30 @@
     <option value="autre">Autre</option>
   </select>
 </div>
-          <div class="col-md-6 form-group mt-3">
-            <label>Revenu Mensuel Net (TND)</label>
-            <input type="number" formControlName="revenuMensuel" class="form-input">
-          </div>
-          <div class="col-md-6 form-group mt-3">
-            <label>Mensualités Crédits Actuels (TND)</label>
-            <input type="number" formControlName="autresCredits" class="form-input">
-          </div>
+<div class="row">
+    <div class="col-md-6 form-group mt-3">
+        <label>Revenu Mensuel Net (TND)</label>
+        <input type="number" formControlName="revenuMensuel" class="form-input">
+    </div>
+
+    <div class="row mt-3">
+    <div class="col-md-4 form-group">
+        <label>Total Charges Fixes (TND)</label>
+        <input type="number" formControlName="chargesFixes" class="form-input" placeholder="Ex: 500">
+    </div>
+
+    <div class="col-md-8 form-group">
+        <label>Détails des charges (Nature)</label>
+        <textarea formControlName="descriptionCharges" class="form-input" rows="2" 
+                  placeholder="Ex: Loyer (500DT), Assurance (60DT), Internet (40DT)"></textarea>
+    </div>
+</div>
+
+    <div class="col-md-12 form-group mt-3">
+        <label>Mensualités Crédits Actuels (TND)</label>
+        <input type="number" formControlName="autresCredits" class="form-input" placeholder="Crédits dans d'autres banques">
+    </div>
+</div>
           <div class="col-md-12 form-group mt-3">
   <label>Nature de la Garantie</label>
   <select formControlName="garantie" class="form-input">
