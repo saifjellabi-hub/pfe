@@ -1,9 +1,7 @@
 package com.vermeg.backend.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import java.time.LocalDate;
 
 @Entity
@@ -19,40 +17,43 @@ public class DemandeCredit {
     @Column(name = "client_ncin", nullable = false)
     private String ncin;
 
+    // --- ÉTAPE 1 : PROFIL PERSONNEL ---
+    private String nom;
+    private String prenom;
+    private String genre; // Homme / Femme
+    private LocalDate dateNaissance;
+    private Integer age;
+    private String situationFamiliale;
+    private Double pensionAlimentaire;
+    private Integer nbEnfants;
+    @Column(columnDefinition = "TEXT")
+    private String datesNaissanceEnfants; // Format: "2015-05-12,2018-03-20"
+
+    // --- ÉTAPE 2 : ENTREPRISE & CONTRAT ---
+    private String nomEntreprise;
+    private String matriculeFiscale;
+    private String statutEntreprise; // Privé / Étatique
+    private String professionDetail;
+    private String secteurActivite;
+    private LocalDate dateEmbauche;
+    private String typeContrat; // CDI, CDD, CVP1, CVP2
+    private Integer dureeContratMois; 
+    private Integer periodeEssaiMois;
+    private Integer moisTravailles;
+    private Integer moisRestants;
+
+    // --- ÉTAPE 3 : CRÉDIT & FINANCE ---
     private Double montant;
     private Integer duree; 
     private String objetCredit;
     private Double revenuMensuel;
-    
-    @Column(name = "mensualitésCréditsActuels")
     private Double autresCredits;
-    
+    private Double chargesFixes;
+    private String descriptionCharges;
     private String garantie;
-    private Double pensionAlimentaire;
-    private Double chargesFixes; // Loyer, assurances, factures, etc.
-    private String descriptionCharges; // Détails : Loyer, électricité, etc.
-
-    // --- NOUVEAUX CHAMPS ENTREPRISE ---
-    private String nomEntreprise;
-    private String secteurActivite;
-    private String typeEmploi; // CDI, CDD, etc.
-    private String telephoneEmployeur;
-    private LocalDate dateEmbauche; 
-    // ----------------------------------
-
-    private String professionDetail;
-    private Integer anciennete;
-    private Integer age;
-    private String situationFamiliale;
-    private Integer nbEnfants;
-    private String agesEnfants; 
+    private Double dtiRatio;
     
     @Column(name = "Lien_Justificatif")
     private String justificatifUrl; 
-
-    private Double tauxInteret;
-    private Double dtiRatio;
-    private String decisionIA; 
-    private Double scoreIA;   
     private String statut = "EN_ATTENTE";
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'; // زدنا FormArray هوني
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CreditService } from '../services/credit.service';
 
@@ -13,191 +13,114 @@ import { CreditService } from '../services/credit.service';
 })
 export class DemandeCredit {
   currentStep = 1;
-selectedFilesList: string[] = [];
-selectedFilePreviews: any[] = [];
-selectedFilesActual: File[] = [];
+  selectedFilesActual: File[] = [];
+  selectedFilesList: string[] = [];
+
   creditForm = new FormGroup({
-    // --- STEP 1: INFOS CRÉDIT & FINANCE ---
-    montant: new FormControl('', [Validators.required, Validators.min(1000)]),
-    duree: new FormControl('', [Validators.required, Validators.min(1), Validators.max(25)]),
-    revenuMensuel: new FormControl('', [Validators.required, Validators.min(500)]),
-    autresCredits: new FormControl(0, [Validators.min(0)]),
-    garantie: new FormControl('Cession sur salaire', [Validators.required]),
-    tauxInteret: new FormControl(8.5, [Validators.required]),
-    chargesFixes: new FormControl(0, [Validators.min(0)]),
-    descriptionCharges: new FormControl(''),
-
-    // --- STEP 2: PROFIL PROFESSIONNEL (MODIFIÉ) ---
-    nomEntreprise: new FormControl('', [Validators.required]), // Nouveau
-    telephoneEmployeur: new FormControl('', [Validators.pattern('^[0-9]{8}$')]), // Nouveau (8 chiffres Tunisie)
-    dateEmbauche: new FormControl('', [Validators.required]), // Nouveau
-    typeEmploi: new FormControl('CDI', [Validators.required]),
-    professionDetail: new FormControl('', [Validators.required]),
-    anciennete: new FormControl('', [Validators.required, Validators.min(0)]),
-    secteurActivite: new FormControl('Technologie / IT', [Validators.required]),
-
-    // --- STEP 3: SITUATION PERSONNELLE ---
-    age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(65)]),
-    situationFamiliale: new FormControl('celibataire', [Validators.required]),
+    // --- STEP 1: PROFIL ---
+    nom: new FormControl('', Validators.required),
+    prenom: new FormControl('', Validators.required),
+    genre: new FormControl('Homme', Validators.required),
+    dateNaissance: new FormControl('', Validators.required),
+    situationFamiliale: new FormControl('celibataire', Validators.required),
     pensionAlimentaire: new FormControl(0),
-    nbEnfants: new FormControl(0, [Validators.min(0)]),
-    agesEnfants: new FormArray([]),
-    objetCredit: new FormControl('immobilier', [Validators.required]),
+    nbEnfants: new FormControl(0),
+    datesNaissanceEnfants: new FormArray([]),
+
+    // --- STEP 2: ENTREPRISE ---
+    nomEntreprise: new FormControl('', Validators.required),
+    matriculeFiscale: new FormControl('', Validators.required),
+    statutEntreprise: new FormControl('Privé', Validators.required),
+    professionDetail: new FormControl('', Validators.required),
+    secteurActivite: new FormControl('Technologie / IT', Validators.required),
+    dateEmbauche: new FormControl('', Validators.required),
+    typeContrat: new FormControl('CDI', Validators.required),
+    dureeContratMois: new FormControl(''),
+    periodeEssaiMois: new FormControl(''),
+    moisTravailles: new FormControl(''),
+    moisRestants: new FormControl(''),
+
+    // --- STEP 3: CRÉDIT ---
+    montant: new FormControl('', [Validators.required, Validators.min(1000)]),
+    duree: new FormControl('', [Validators.required, Validators.min(1)]),
+    revenuMensuel: new FormControl('', [Validators.required, Validators.min(500)]),
+    autresCredits: new FormControl(0),
+    chargesFixes: new FormControl(0),
+    descriptionCharges: new FormControl(''),
+    objetCredit: new FormControl('immobilier', Validators.required),
+    garantie: new FormControl('Cession sur salaire', Validators.required),
     justificatifUrl: new FormControl('')
   });
 
   constructor(private creditService: CreditService, private router: Router) {}
 
-  // --- الهوني الخدمة الجديدة ---
-  
-  // Getter باش نوصلو لخانة الأعمار في الـ HTML بسهولة
-  get agesEnfants() {
-    return this.creditForm.get('agesEnfants') as FormArray;
+  get datesNaissanceEnfants() {
+    return this.creditForm.get('datesNaissanceEnfants') as FormArray;
   }
 
-  // الـ Function اللي تزيد وتنقص الخانات حسب عدد الصغار
- onNbEnfantsChange() {
-  const nb = this.creditForm.get('nbEnfants')?.value || 0;
-  const currentLen = this.agesEnfants.length;
-
-  if (nb > currentLen) {
-    for (let i = currentLen; i < nb; i++) {
-      this.agesEnfants.push(new FormControl('', Validators.required));
+  onNbEnfantsChange() {
+    const nb = this.creditForm.get('nbEnfants')?.value || 0;
+    while (this.datesNaissanceEnfants.length < nb) {
+      this.datesNaissanceEnfants.push(new FormControl('', Validators.required));
     }
-  } else {
-    for (let i = currentLen; i > nb; i--) {
-      this.agesEnfants.removeAt(i - 1);
+    while (this.datesNaissanceEnfants.length > nb) {
+      this.datesNaissanceEnfants.removeAt(this.datesNaissanceEnfants.length - 1);
     }
   }
-}
 
-  nextStep() { if (this.currentStep < 3) this.currentStep++; }
-  prevStep() { if (this.currentStep > 1) this.currentStep--; }
+  nextStep() { this.currentStep++; }
+  prevStep() { this.currentStep--; }
 
-onSubmit() {
-  // 2. نجيبو الـ NCIN متاع الحريف اللي عامل Login
-  const userData = localStorage.getItem('currentUser');
-  if (!userData) {
-    alert("Session expirée. Veuillez vous reconnecter.");
-    this.router.navigate(['/login']);
-    return;
-  }
-  const currentUserNcin = JSON.parse(userData).ncin;
-
-  if (this.creditForm.valid) {
-    const data = this.creditForm.getRawValue();
+  onSubmit() {
+    const userData = localStorage.getItem('currentUser');
+    if (!userData || this.creditForm.invalid) return;
     
-    // 3. الحسابات (المدة والـ DTI)
-    const dureeEnMois = Number(data.duree) * 12;
-    const mensualite = (Number(data.montant) / dureeEnMois);
-    const totalCharges = mensualite + 
-    Number(data.autresCredits) + 
-    (Number(data.pensionAlimentaire) || 0) + 
-    (Number(data.chargesFixes) || 0);
-    const dti = (totalCharges / Number(data.revenuMensuel)) * 100;
-    const agesEnfantsString = data.agesEnfants ? data.agesEnfants.join(',') : '';
+    const currentUserNcin = JSON.parse(userData).ncin;
+    const data = this.creditForm.getRawValue();
 
-    // 5. الـ Payload النهائي (البيانات اللي ماشية للـ Database)
+    // --- LOGIQUE FINANCIÈRE (PENSION) ---
+    let revenuAjuste = Number(data.revenuMensuel);
+    if (data.situationFamiliale === 'divorce') {
+      if (data.genre === 'Homme') {
+        revenuAjuste -= Number(data.pensionAlimentaire); // On retire
+      } else {
+        revenuAjuste += Number(data.pensionAlimentaire); // On ajoute
+      }
+    }
+
+    const mensualite = (Number(data.montant) / (Number(data.duree) * 12));
+    const dti = ((mensualite + Number(data.autresCredits) + Number(data.chargesFixes)) / revenuAjuste) * 100;
+
     const finalPayload = {
       ...data,
-      ncin: currentUserNcin,  
-      agesEnfants: agesEnfantsString,
-      duree: dureeEnMois, 
+      ncin: currentUserNcin,
       dtiRatio: dti,
-      status: 'En attente'
+      datesNaissanceEnfants: data.datesNaissanceEnfants.join(','),
+      statut: 'EN_ATTENTE'
     };
- const formData = new FormData();
- formData.append('demande', new Blob([JSON.stringify(finalPayload)], {
-      type: 'application/json'
-    }));
 
-    // نزيدو ملفات الـ PDF الحقيقية
-    this.selectedFilesActual.forEach((file) => {
-      formData.append('files', file); 
-    });
+    const formData = new FormData();
+    formData.append('demande', new Blob([JSON.stringify(finalPayload)], { type: 'application/json' }));
+    this.selectedFilesActual.forEach(file => formData.append('files', file));
 
-    // 6. بعث البيانات للـ Spring Boot
     this.creditService.createDemande(formData).subscribe({
-      next: (response) => {
-        console.log('Demande enregistrée avec succès !', response);
-        this.router.navigate(['/resultat-credit']);
-      },
-      error: (err) => {
-        console.error('Erreur Backend:', err);
-       if (err.status === 400 || err.status === 500) {
-      
-      const errorMsg = typeof err.error === 'string' ? err.error : (err.error?.message || "Une demande existe déjà.");
-      
-      alert("⚠️ " + errorMsg); 
-      
-      
-      this.router.navigate(['/resultat-credit']);
-    } else {
-      alert("Une erreur technique est survenue.");
-    }
-  }
+      next: () => this.router.navigate(['/resultat-credit']),
+      error: (err) => alert("Erreur: " + err.message)
     });
-  } else {
-    // لو الفورم ناقص، نخرجوا الأخطاء في الـ Console باش نعرفوا وين المشكلة
-    console.warn('Le formulaire est invalide. Vérification des erreurs :');
-    Object.keys(this.creditForm.controls).forEach(key => {
-      const controlErrors = this.creditForm.get(key)?.errors;
-      if (controlErrors != null) {
-        console.log('Champ avec erreur: ' + key, controlErrors);
-      }
-    });
-    alert("Veuillez remplir tous les champs obligatoires correctement.");
   }
-}
-async onFileSelected(event: any) {
-  const files = event.target.files;
-  if (files && files.length > 0) {
-    const filesArray = Array.from(files) as File[];
 
-    for (const file of filesArray) {
-      if (file.type !== 'application/pdf') {
-        alert(`Le fichier "${file.name}" n'est pas un PDF. Veuillez choisir uniquement des fichiers PDF.`);
-        continue;
-      }
-
-      if (!this.selectedFilesList.includes(file.name)) {
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      Array.from(files).forEach((file: any) => {
         this.selectedFilesList.push(file.name);
-        this.selectedFilesActual.push(file); 
-        
-        this.selectedFilePreviews.push('pdf-icon'); 
-      }
+        this.selectedFilesActual.push(file);
+      });
     }
-    this.selectedFilesList = [...this.selectedFilesList];
-    this.creditForm.patchValue({
-      justificatifUrl: this.selectedFilesList.join(', ')
-    });
-
-    event.target.value = ''; 
   }
-}
 
-// Function مساعدة تقرا الملف وتستناه لين يكمل (Promise)
-readFileAsDataURL(file: File): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => resolve(e.target?.result);
-    reader.onerror = (e) => reject(e);
-    reader.readAsDataURL(file);
-  });
-}
-removeFile(index: number) {
-  this.selectedFilesList.splice(index, 1);
-  this.selectedFilePreviews.splice(index, 1);
-  
-  // ⚠️ السطر هذا يخلي الـ Label يتصلح لحظياً
-  this.selectedFilesList = [...this.selectedFilesList];
-  this.selectedFilePreviews = [...this.selectedFilePreviews];
- this.selectedFilesActual.splice(index, 1);
-  this.creditForm.patchValue({
-    justificatifUrl: this.selectedFilesList.join(', ')
-  });
-
-  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-  if (fileInput) fileInput.value = ''; 
-}
+  removeFile(i: number) {
+    this.selectedFilesList.splice(i, 1);
+    this.selectedFilesActual.splice(i, 1);
+  }
 }
