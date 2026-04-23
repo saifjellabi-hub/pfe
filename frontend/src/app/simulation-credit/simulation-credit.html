@@ -40,21 +40,14 @@
   <div class="row text-center">
     
     <div class="col-md-4">
-      <h5 style="opacity: 0.8; font-size: 0.9rem;">Montant du crédit</h5>
+      <h5 style="opacity: 0.8; font-size: 0.9rem;">Montant du crédit possible</h5>
       <div class="result-value" style="color: #28a745;">{{ montantCredit | number:'1.0-0' }} DT</div>
-      <small>(Le capital décaissé)</small>
     </div>
 
-    <div class="col-md-4">
-      <h5 style="opacity: 0.8; font-size: 0.9rem;">Total Intérêts (8%)</h5>
-      <div class="result-value" style="color: var(--vermeg-red);">{{ totalInteret | number:'1.0-0' }} DT</div>
-      <small>(Coût du crédit)</small>
-    </div>
 
     <div class="col-md-4">
-      <h5 style="opacity: 0.8; font-size: 0.9rem;">Total à rembourser</h5>
-      <div class="result-value" style="color: #ffc107;">{{ totalARembourser | number:'1.0-0' }} DT</div>
-      <small>({{ salaire * 0.4 | number:'1.0-0' }} DT / mois)</small>
+      <h5 style="opacity: 0.8; font-size: 0.9rem;">Montant à rembourser</h5>
+      <div class="result-value" style="color: #ffc107;">({{ salaire * 0.4 | number:'1.0-0' }} DT / mois)</div>
     </div>
 
   </div>
@@ -66,12 +59,7 @@
 
 <div class="mt-4 text-center">
       <a routerLink="/client" style="color: var(--text-color); opacity: 0.6; text-decoration: none; font-size: 0.9rem;">
-        <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord
-      </a>
+        <i class="fa-solid fa-arrow-left"></i> Retour au tableau de bord</a>
     </div>
-
-
-
-
   </div>
 </div>

@@ -72,8 +72,9 @@
           <div class="col-md-6 form-group mt-3">
             <label>Type de Contrat</label>
             <select formControlName="typeContrat" class="form-input">
-              <option value="CDI">Titulaire / CDI</option>
-              <option value="CDD">Contractuel / CDD</option>
+              <option value="Titulaire">Titulaire</option>
+              <option value="CDI">CDI</option>
+              <option value="CDD">CDD</option>
               <option value="CVP1">CVP 1</option>
               <option value="CVP2">CVP 2</option>
             </select>
@@ -92,7 +93,7 @@
       </div>
 
       <div *ngIf="currentStep === 3" class="step-content animate-in">
-        <h4 class="section-title">Paramètres du Crédit</h4>
+        <h4 class="section-title">Informations sur le Crédit</h4>
         <div class="row">
           <div class="col-md-6 form-group"><label>Montant souhaité (TND)</label><input type="number" formControlName="montant" class="form-input"></div>
           <div class="col-md-6 form-group"><label>Durée (Années)</label><input type="number" formControlName="duree" class="form-input"></div>
@@ -101,7 +102,15 @@
         </div>
 
         <div class="upload-container mt-4">
-          <label class="upload-title">📑 Pièces Justificatives (PDF)</label>
+          <label class="upload-title">📑 carte d'indentité nationale (PDF)</label>
+          <input type="file" (change)="onFileSelected($event)" hidden id="fileUpload" multiple accept="application/pdf">
+          <label for="fileUpload" class="custom-file-upload">Choisir les fichiers</label>
+          <div *ngFor="let f of selectedFilesList; let i = index" class="mt-2">
+            {{f}} <button (click)="removeFile(i)" type="button" class="btn-danger btn-sm">X</button>
+          </div>
+        </div>
+        <div class="upload-container mt-4">
+          <label class="upload-title">📑 attestation de travail (PDF)</label>
           <input type="file" (change)="onFileSelected($event)" hidden id="fileUpload" multiple accept="application/pdf">
           <label for="fileUpload" class="custom-file-upload">Choisir les fichiers</label>
           <div *ngFor="let f of selectedFilesList; let i = index" class="mt-2">

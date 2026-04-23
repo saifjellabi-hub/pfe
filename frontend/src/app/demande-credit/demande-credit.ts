@@ -72,42 +72,63 @@ export class DemandeCredit {
   prevStep() { this.currentStep--; }
 
   onSubmit() {
-    const userData = localStorage.getItem('currentUser');
-    if (!userData || this.creditForm.invalid) return;
+    if (this.creditForm.invalid) return;
+
+    const formVal = this.creditForm.value;
+
+
+
     
-    const currentUserNcin = JSON.parse(userData).ncin;
-    const data = this.creditForm.getRawValue();
+    // 1. Calcul de l'âge
+    const birthDate = new Date(formVal.dateNaissance!);
+    const age = new Date().getFullYear() - birthDate.getFullYear();
 
-    // --- LOGIQUE FINANCIÈRE (PENSION) ---
-    let revenuAjuste = Number(data.revenuMensuel);
-    if (data.situationFamiliale === 'divorce') {
-      if (data.genre === 'Homme') {
-        revenuAjuste -= Number(data.pensionAlimentaire); // On retire
-      } else {
-        revenuAjuste += Number(data.pensionAlimentaire); // On ajoute
-      }
-    }
-
-    const mensualite = (Number(data.montant) / (Number(data.duree) * 12));
-    const dti = ((mensualite + Number(data.autresCredits) + Number(data.chargesFixes)) / revenuAjuste) * 100;
-
-    const finalPayload = {
-      ...data,
-      ncin: currentUserNcin,
-      dtiRatio: dti,
-      datesNaissanceEnfants: data.datesNaissanceEnfants.join(','),
-      statut: 'EN_ATTENTE'
+    // 2. Préparation de l'objet DemandeCredit (format Java)
+    const demandeData = {
+        ...formVal,
+        age: age,
+        ncin: JSON.parse(localStorage.getItem('currentUser') || '{}').ncin || '12345678', // Récupère le CIN de l'utilisateur connecté
+        statut: 'EN_ATTENTE'
     };
 
-    const formData = new FormData();
-    formData.append('demande', new Blob([JSON.stringify(finalPayload)], { type: 'application/json' }));
-    this.selectedFilesActual.forEach(file => formData.append('files', file));
+    // 3. Utilisation de FormData pour envoyer Fichiers + JSON
+    const dataToSend = { ...this.creditForm.value };
+    delete (dataToSend as any).files;
+    delete (dataToSend as any).piecesJustificatives;
 
-    this.creditService.createDemande(formData).subscribe({
-      next: () => this.router.navigate(['/resultat-credit']),
-      error: (err) => alert("Erreur: " + err.message)
+    const formData = new FormData();
+
+    formData.append('demande', JSON.stringify(this.creditForm.value));
+    
+    this.selectedFilesActual.forEach(file => {
+        formData.append('files', file);
     });
-  }
+
+    // 4. Envoi au Service
+    this.creditService.createDemande(formData).subscribe({
+        next: (res) => {
+            alert('Demande envoyée avec succès !');
+            this.router.navigate(['/client-dashboard']);
+        },
+        error: (err) => {
+            console.error('Erreur lors de l\'envoi', err);
+            alert('Erreur lors de l\'envoi de la demande.');
+        }
+    });
+}
+
+mapSituation(val: string) {
+  if (val === 'celibataire') return 0;
+  if (val === 'marie') return 1;
+  return 2; // divorce
+}
+
+mapContrat(val: string) {
+  if (val === 'Titulaire') return 0;
+  if (val === 'CDI') return 1;
+  if (val === 'CDD') return 2;
+  return 3; // CVP
+}
 
   onFileSelected(event: any) {
     const files = event.target.files;

@@ -6,22 +6,22 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CreditService {
-  private apiUrl = 'http://localhost:8080/api/demandes';
+  // Changement de 'demandes' vers 'credits' pour correspondre au Controller Java
+  private apiUrl = 'http://localhost:8080/api/credits';
 
   constructor(private http: HttpClient) { }
 
-createDemande(formData: FormData): Observable<any> {
-  // هوني نبعثو الـ formData كاملة (فيها الـ JSON والـ Files)
-  return this.http.post(`${this.apiUrl}`, formData);
-}
+  // 1. Envoi de la demande (JSON + Fichiers)
+  createDemande(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, formData);
+  }
 
-  // 2. تجيب كل الطلبات الخاصة بحريف معين من الـ Database باستعمال الـ NCIN
-  // الـ Backend لازم يكون فيه Endpoint: /api/demandes/client/{ncin}
- getDemandesByClient(ncin: string): Observable<any> {
-  return this.http.get(`http://localhost:8080/api/demandes/client/${ncin}`);
-}
+  // 2. Récupérer les demandes d'un client spécifique
+  getDemandesByClient(ncin: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/client/${ncin}`);
+  }
 
-  // 3. دالة اختيارية إذا حبيت تجيب طلب واحد بالـ ID متاعو
+  // 3. Récupérer une demande spécifique par ID
   getDemandeById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }

@@ -1,39 +1,49 @@
 package com.vermeg.backend.services;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 import com.vermeg.backend.entities.DemandeCredit;
 import com.vermeg.backend.repositories.DemandeCreditRepository;
-import java.io.File;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.*;
-
+import java.util.UUID;
 @Service
 public class DemandeCreditService {
 
     @Autowired
-    private DemandeCreditRepository demandeRepository;
+    private DemandeCreditRepository repository;
 
-    public DemandeCredit saveWithFiles(DemandeCredit demande, MultipartFile[] files) throws IOException {
-        String uploadDir = "uploads/justificatifs/";
-        File directory = new File(uploadDir);
-        
-        if (!directory.exists()) {
-            directory.mkdirs();
+    private final Path root = Paths.get("uploads");
+
+    @Transactional
+    public DemandeCredit saveDemandeComplete(DemandeCredit demande, MultipartFile[] files) throws IOException {
+        // 1. Création du dossier uploads s'il n'existe pas
+        if (!Files.exists(root)) {
+            Files.createDirectories(root);
         }
 
-        List<String> fileNames = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path path = Paths.get(uploadDir + fileName);
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            fileNames.add(fileName);
+        // 2. Traitement des fichiers
+        StringBuilder fileNames = new StringBuilder();
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String uniqueName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                    Files.copy(file.getInputStream(), this.root.resolve(uniqueName), StandardCopyOption.REPLACE_EXISTING);
+                    fileNames.append(uniqueName).append(";");
+                }
+            }
         }
 
-        demande.setJustificatifUrl(String.join(", ", fileNames));
-        return demandeRepository.save(demande);
+        // 3. On attache les noms des fichiers à l'entité
+        demande.setJustificatifUrl(fileNames.toString());
+
+        // 4. SAUVEGARDE EN BASE DE DONNÉES
+        System.out.println("Tentative d'enregistrement en base de données pour : " + demande.getNom());
+        return repository.save(demande);
     }
 }

@@ -97,7 +97,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let client of clients">
+          <tr *ngFor="let client of filteredClients">
             <td><strong>{{ client.ncin }}</strong></td>
             <td>{{ client.nom }} {{ client.prenom }}</td>
             <td>{{ client.email }}</td>
