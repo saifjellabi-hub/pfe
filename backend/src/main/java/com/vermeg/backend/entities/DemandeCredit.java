@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
@@ -30,8 +31,10 @@ public class DemandeCredit {
     private LocalDate dateNaissance;
 
     private Integer age;
+    @JsonProperty("situationFamiliale")
     private String situationFamiliale;
     private Double pensionAlimentaire;
+    @JsonProperty("nbEnfants")
     private Integer nbEnfants;
     
     @Column(columnDefinition = "TEXT")
@@ -47,7 +50,8 @@ public class DemandeCredit {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateEmbauche;
 
-    private String typeContrat; 
+    @JsonProperty("typeContrat")
+    private String typeContrat;
     private Integer dureeContratMois; 
     private Integer periodeEssaiMois;
     private Integer moisTravailles;
@@ -56,16 +60,31 @@ public class DemandeCredit {
     private Double montant;
     private Integer duree; 
     private String objetCredit;
+    @JsonProperty("revenuMensuel")
     private Double revenuMensuel;
     private Double autresCredits;
+    @JsonProperty("chargesFixes")
     private Double chargesFixes;
     private String descriptionCharges;
-    private String garantie;
     private Double dtiRatio;
     private Double scoreIA;
 
-    @Column(name = "Lien_Justificatif", length = 1000)
-    private String justificatifUrl; 
+    
+    @Column(length = 1000)
+    private String urlCin;
+    @Column(length = 1000)
+    private String urlAttestation;
+    @Column(length = 1000)
+    private String urlFichesPaie;
     
     private String statut = "EN_ATTENTE";
+
+    private String typeGarantie;
+    private Double valeurGarantie;
+    // Getters et Setters
+    public String getTypeGarantie() { return typeGarantie; }
+    public void setTypeGarantie(String typeGarantie) { this.typeGarantie = typeGarantie; }
+
+    public Double getValeurGarantie() { return valeurGarantie; }
+    public void setValeurGarantie(Double valeurGarantie) { this.valeurGarantie = valeurGarantie; }
 }

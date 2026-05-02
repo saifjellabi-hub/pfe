@@ -39,17 +39,15 @@
 /* Header */
 .admin-nav {
   display: flex;
+  justify-content: space-between; /* Espace entre les 3 blocs */
   align-items: center;
-  justify-content: space-between;
-  height: 120px;
   padding: 0 30px;
-  background-color: var(--card-bg);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  border-bottom: 1px solid var(--border-color);
+  background-color: #1a1a2e; /* Ta couleur sombre */
+  height: 80px;
   position: sticky;
   top: 0;
-  z-index: 100;
-  position: relative;
+  z-index: 1000;
+  width: 100%;
 }
 
 /* Left side */
@@ -70,33 +68,31 @@
 
 
 .nav-title {
-  position: absolute;
-  left: 50%;
-
-  transform: translateX(-50%);
-  font-weight: 700;
-  font-size: 30px;
-  color: var(--text-color);
+  flex: 1; /* Prend le milieu */
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 2px;
+  white-space: nowrap; /* Empêche le texte de revenir à la ligne */
 }
 
 
 /* Right side buttons */
 .nav-right {
+  flex: 1; /* Prend 1/3 de l'espace à droite */
   display: flex;
+  justify-content: flex-end; /* Aligne les boutons à droite */
+  gap: 15px;
   align-items: center;
-  gap: 10px;
 }
 .nav-logo-wrapper {
-  background-color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 0 0 15px 15px; /* نفس login page */
+  flex: 1; /* Prend 1/3 de l'espace à gauche */
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 .nav-logo {
-  height: 60px;
+  height: 45px;
   width: auto;
 }
 .admin-button {

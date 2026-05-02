@@ -37,6 +37,13 @@ getDemandes(): Observable<any[]> {
 }
 
 modifierStatut(id: number, statut: string): Observable<any> {
-  return this.http.put(`http://localhost:8080/api/credits/update-statut/${id}`, statut);
+  return this.http.put(`http://localhost:8080/api/credits/${id}/statut`, statut);
+}
+// À ajouter dans AgentService
+getClients(): Observable<any[]> {
+  return this.http.get<any[]>('http://localhost:8080/api/clients/all');
+}
+deleteDemande(id: number): Observable<any> {
+  return this.http.delete(`http://localhost:8080/api/credits/delete/${id}`);
 }
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgentService } from '../services/agent.service';
+import { ClientService } from '../services/client.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -13,105 +14,151 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './agent-dashboard.css'
 })
 export class AgentDashboardComponent implements OnInit {
-  // 1. Injections
+  isDarkMode = true;
   private http = inject(HttpClient);
-  private agentService = inject(AgentService);
-  private router = inject(Router);
 
-  // 2. Propriétés (Déclarées UNE SEULE FOIS ici)
+  // Propriétés pour la gestion des données
   agentName: string = '';
   demandes: any[] = [];
-  
   clients: any[] = [];
-  filteredClients: any[] = [];
+  
+  // Propriétés pour la recherche
+  searchTermCredit: string = '';
   searchTermClient: string = '';
+
+  // --- NOUVEAU : Propriétés pour l'édition (Identique à l'Admin) ---
+  editingClientNcin: number | null = null;
+  editFormData: any = {};
 
   showHistoryModal = false;
   selectedClientHistory: any[] = [];
   currentClientName = '';
 
-  // 3. Initialisation (Une seule méthode ngOnInit)
+  constructor(
+    private agentService: AgentService, 
+    private clientService: ClientService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    
+    // On cible le sélecteur de ce composant
+    const host = document.querySelector('app-agent-dashboard') as HTMLElement;
+    
+    if (this.isDarkMode) {
+      host.classList.remove('light-theme');
+    } else {
+      host.classList.add('light-theme');
+    }
+  }
+
+
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.agentName = user.nom ? `${user.nom} ${user.prenom}` : 'Agent';
+    this.loadData();
+  }
+
+  loadData(): void {
+    console.log("Chargement des données pour l'agent...");
     
-    this.chargerDemandes();
-    this.loadClients();
-  }
+    // 1. Charger les Clients
+    this.clientService.getClients().subscribe({
+      next: (data) => {
+        this.clients = [...data];
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error("Erreur clients", err)
+    });
 
-  // 4. Méthodes pour les Demandes
-  chargerDemandes(): void {
+    // 2. Charger les Demandes de crédit (Endpoint que nous avons créé en Java)
     this.agentService.getDemandes().subscribe({
-      next: (data: any[]) => {
-        this.demandes = data;
+      next: (data) => {
+        this.demandes = [...data];
+        this.cdr.detectChanges();
       },
-      error: (err: any) => console.error("Erreur de chargement des demandes", err)
+      error: (err) => console.error("Erreur demandes", err)
     });
   }
 
-  valider(id: number): void {
-    this.agentService.modifierStatut(id, 'ACCEPTE').subscribe({
-      next: () => {
-        alert('Crédit Approuvé !');
-        this.chargerDemandes(); 
-      },
-      error: (err) => alert("Erreur lors de la validation")
-    });
+  // --- SECTION CLIENTS (Logique copiée de l'Admin) ---
+
+  startEditClient(client: any) {
+    this.editingClientNcin = client.ncin;
+    this.editFormData = { ...client }; 
   }
 
-  rejeter(id: number): void {
-    this.agentService.modifierStatut(id, 'REFUSE').subscribe({
-      next: () => {
-        alert('Crédit Refusé');
-        this.chargerDemandes();
-      },
-      error: (err) => alert("Erreur lors du refus")
-    });
+  cancelEdit() {
+    this.editingClientNcin = null;
+    this.editFormData = {};
   }
 
-  getCountByStatut(statut: string): number {
-    return this.demandes.filter(d => d.statut === statut).length;
+  saveEdit() {
+    if (this.editingClientNcin) {
+      this.clientService.updateClient(this.editingClientNcin, this.editFormData).subscribe({
+        next: () => {
+          alert('Données client mises à jour !');
+          this.editingClientNcin = null; 
+          this.loadData(); 
+        },
+        error: (err) => alert('Erreur lors de la mise à jour')
+      });
+    }
   }
 
-  // 5. Méthodes pour les Clients
-  loadClients() {
-  this.http.get<any[]>('http://localhost:8080/api/clients/all').subscribe({
-    next: (data) => {
-      console.log("Données reçues :", data);
-      this.clients = data;
-      this.filteredClients = [...data]; // On crée une nouvelle référence de tableau
-    },
-    error: (err) => console.error("Erreur :", err)
-  });
-}
+  deleteClient(ncin: number) {
+    if (confirm('Voulez-vous vraiment supprimer ce client ?')) {
+      this.clientService.deleteClient(ncin).subscribe({
+        next: () => {
+          alert('Client supprimé !');
+          this.loadData(); 
+        },
+        error: (err) => console.error(err)
+      });
+    }
+  }
 
-  filterClients(): void {
-    this.filteredClients = this.clients.filter(client =>
-      client.ncin.toString().includes(this.searchTermClient) ||
-      (client.nom + ' ' + client.prenom).toLowerCase().includes(this.searchTermClient.toLowerCase())
+  // --- GETTERS POUR LE FILTRAGE ---
+
+  get filteredClients() {
+    return this.clients.filter(client => 
+      client.ncin?.toString().includes(this.searchTermClient)
     );
   }
 
-  // 6. Historique et Modal
-  voirDetailsClient(client: any): void {
-    this.currentClientName = client.nom + ' ' + client.prenom;
-    this.http.get<any[]>(`http://localhost:8080/api/credits/client/${this.currentClientName}`)
-      .subscribe({
-        next: (data) => {
-          this.selectedClientHistory = data;
-          this.showHistoryModal = true;
-        },
-        error: (err) => console.error("Erreur historique", err)
-      });
+  get filteredDemandes() {
+    const term = this.searchTermCredit.toLowerCase();
+    return this.demandes.filter(d => 
+      d.ncin?.toString().includes(term) || 
+      (d.nom + ' ' + d.prenom).toLowerCase().includes(term)
+    );
   }
 
-  closeModal(): void {
-    this.showHistoryModal = false;
-  }
+  // --- NAVIGATION & AUTRES ---
 
-  // 7. Navigation
+  goToRegister(): void {
+    this.router.navigate(['/inscription']);
+  }
+  goTosimulation(): void {
+    this.router.navigate(['/simulation-credit']);
+  }
   logout(): void {
     localStorage.clear();
     this.router.navigate(['/agent-login']);
   }
+
+  deleteDemande(id: number): void {
+    if(confirm("Supprimer cette demande ?")) {
+      // Ajoute une méthode deleteDemande dans ton agentService si besoin
+      console.log("Suppression demande", id);
+    }
+  }
+
+  // Pour le bouton "Oeil" (Détails)
+  viewDetails(id: number): void {
+     // Logique pour voir les détails d'une demande
+  }
+
 }

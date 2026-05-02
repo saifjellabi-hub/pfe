@@ -2,23 +2,14 @@ package com.vermeg.backend.controllers;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.vermeg.backend.entities.Client;
 import com.vermeg.backend.repositories.ClientRepository;
 import com.vermeg.backend.services.EmailService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -27,11 +18,14 @@ import com.vermeg.backend.services.EmailService;
 public class ClientController {
     private Map<String, String> otpStorage = new java.util.HashMap<>();
     @Autowired
-private EmailService emailService;
-
+    private EmailService emailService;
     @Autowired
     private ClientRepository clientRepository;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Client>> getAllClients() {
+        return ResponseEntity.ok(clientRepository.findAll());
+    }
    
     @PostMapping("/register")
     public ResponseEntity<?> registerClient(@RequestBody Client client) {
@@ -46,10 +40,6 @@ private EmailService emailService;
     }
 
 
-    @GetMapping("/all")
-    public List<Client> getAllClients() {
-        return clientRepository.findAll();
-    }
   @PostMapping("/login")
 public ResponseEntity<?> loginClient(@RequestBody Map<String, String> payload) {
     int ncin = Integer.parseInt(payload.get("ncin"));

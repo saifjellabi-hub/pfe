@@ -92,6 +92,7 @@
         </div>
       </div>
 
+      <!-- ÉTAPE 3 -->
       <div *ngIf="currentStep === 3" class="step-content animate-in">
         <h4 class="section-title">Informations sur le Crédit</h4>
         <div class="row">
@@ -101,25 +102,56 @@
           <div class="col-md-6 form-group mt-3"><label>Charges Fixes</label><input type="number" formControlName="chargesFixes" class="form-input"></div>
         </div>
 
+        <div class="col-md-12 mt-4">
+          <h5 class="subsection-title">Garantie proposée</h5>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Type de Garantie</label>
+              <select formControlName="typeGarantie" class="form-input">
+                <option value="Hypothèque">Hypothèque (Immobilier)</option>
+                <option value="Caution">Caution (Personne physique)</option>
+                <option value="Gage">Gage (Véhicule/Matériel)</option>
+                <option value="Nantie">Placement bloqué</option>
+                <option value="Aucune">Sans garantie</option>
+              </select>
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Valeur estimée de la garantie (TND)</label>
+              <input type="number" formControlName="valeurGarantie" class="form-input" placeholder="Ex: 50000">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Uploads -->
         <div class="upload-container mt-4">
           <label class="upload-title">📑 carte d'indentité nationale (PDF)</label>
-          <input type="file" (change)="onFileSelected($event)" hidden id="fileUpload" multiple accept="application/pdf">
-          <label for="fileUpload" class="custom-file-upload">Choisir les fichiers</label>
-          <div *ngFor="let f of selectedFilesList; let i = index" class="mt-2">
-            {{f}} <button (click)="removeFile(i)" type="button" class="btn-danger btn-sm">X</button>
+          <input type="file" (change)="onFileSelected($event, 'CIN')" hidden id="fileUploadCIN" multiple accept="application/pdf">
+          <label for="fileUploadCIN" class="custom-file-upload">Choisir les fichiers</label>
+          <div *ngFor="let file of selectedCinFiles; let i = index" class="mt-2">
+            {{file.name}} <button (click)="removeFile(i, 'CIN')" type="button" class="btn-danger btn-sm">X</button>
           </div>
         </div>
+
         <div class="upload-container mt-4">
           <label class="upload-title">📑 attestation de travail (PDF)</label>
-          <input type="file" (change)="onFileSelected($event)" hidden id="fileUpload" multiple accept="application/pdf">
-          <label for="fileUpload" class="custom-file-upload">Choisir les fichiers</label>
-          <div *ngFor="let f of selectedFilesList; let i = index" class="mt-2">
-            {{f}} <button (click)="removeFile(i)" type="button" class="btn-danger btn-sm">X</button>
+          <input type="file" (change)="onFileSelected($event, 'ATTEST')" hidden id="fileUploadAttest" multiple accept="application/pdf">
+          <label for="fileUploadAttest" class="custom-file-upload">Choisir les fichiers</label>
+          <div *ngFor="let file of selectedAttestFiles; let i = index" class="mt-2">
+            {{file.name}} <button (click)="removeFile(i, 'ATTEST')" type="button" class="btn-danger btn-sm">X</button>
           </div>
         </div>
-      </div>
 
-      <div class="footer-actions mt-5">
+        <div class="upload-container mt-4">
+          <label class="upload-title">📑 Fiches de paie de la dernière année (PDF)</label>
+          <input type="file" (change)="onFileSelected($event, 'PAIE')" hidden id="fichePaieUpload" multiple accept="application/pdf">
+          <label for="fichePaieUpload" class="custom-file-upload">Choisir les fichiers</label>
+          <div *ngFor="let file of selectedPaieFiles; let i = index" class="mt-2">
+            {{file.name}} <button (click)="removeFile(i, 'PAIE')" type="button" class="btn-danger btn-sm">X</button>
+          </div>
+        </div>
+      </div> <!-- /!\ C'EST CE DIV QUI MANQUAIT /!\ -->
+
+    <div class="footer-actions mt-5">
         <button type="button" class="btn-secondary" (click)="prevStep()" *ngIf="currentStep > 1">Retour</button>
         <button type="button" class="btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">Suivant</button>
         <button type="submit" class="btn-analyze" *ngIf="currentStep === 3" [disabled]="creditForm.invalid">Envoyer la demande</button>

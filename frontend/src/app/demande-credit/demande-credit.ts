@@ -48,7 +48,8 @@ export class DemandeCredit {
     chargesFixes: new FormControl(0),
     descriptionCharges: new FormControl(''),
     objetCredit: new FormControl('immobilier', Validators.required),
-    garantie: new FormControl('Cession sur salaire', Validators.required),
+    typeGarantie: new FormControl('Hypothèque', Validators.required), 
+    valeurGarantie: new FormControl(0, [Validators.required, Validators.min(0)]),
     justificatifUrl: new FormControl('')
   });
 
@@ -76,9 +77,6 @@ export class DemandeCredit {
 
     const formVal = this.creditForm.value;
 
-
-
-    
     // 1. Calcul de l'âge
     const birthDate = new Date(formVal.dateNaissance!);
     const age = new Date().getFullYear() - birthDate.getFullYear();
@@ -96,13 +94,15 @@ export class DemandeCredit {
     delete (dataToSend as any).files;
     delete (dataToSend as any).piecesJustificatives;
 
+    const payload = { ...formVal, age: age, statut: 'EN_ATTENTE' };
     const formData = new FormData();
 
-    formData.append('demande', JSON.stringify(this.creditForm.value));
+    formData.append('demande', JSON.stringify(payload));
     
-    this.selectedFilesActual.forEach(file => {
-        formData.append('files', file);
-    });
+    this.selectedCinFiles.forEach(file => formData.append('cinFiles', file));
+  this.selectedAttestFiles.forEach(file => formData.append('attestFiles', file));
+  this.selectedPaieFiles.forEach(file => formData.append('paieFiles', file));
+
 
     // 4. Envoi au Service
     this.creditService.createDemande(formData).subscribe({
@@ -129,19 +129,20 @@ mapContrat(val: string) {
   if (val === 'CDD') return 2;
   return 3; // CVP
 }
+selectedCinFiles: File[] = [];
+selectedAttestFiles: File[] = [];
+selectedPaieFiles: File[] = [];
+  onFileSelected(event: any, category: string) {
+  const files = Array.from(event.target.files) as File[];
+  if (category === 'CIN') this.selectedCinFiles = files;
+  if (category === 'ATTEST') this.selectedAttestFiles = files;
+  if (category === 'PAIE') this.selectedPaieFiles = files;
+}
 
-  onFileSelected(event: any) {
-    const files = event.target.files;
-    if (files) {
-      Array.from(files).forEach((file: any) => {
-        this.selectedFilesList.push(file.name);
-        this.selectedFilesActual.push(file);
-      });
-    }
-  }
-
-  removeFile(i: number) {
-    this.selectedFilesList.splice(i, 1);
-    this.selectedFilesActual.splice(i, 1);
-  }
+  
+  removeFile(index: number, category: string) {
+  if (category === 'CIN') this.selectedCinFiles.splice(index, 1);
+  if (category === 'ATTEST') this.selectedAttestFiles.splice(index, 1);
+  if (category === 'PAIE') this.selectedPaieFiles.splice(index, 1);
+}
 }
